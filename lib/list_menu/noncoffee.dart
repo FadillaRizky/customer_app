@@ -48,9 +48,9 @@ class _NoncoffeeState extends State<Noncoffee> {
     yield total;
   }
   List coffeeName = [
-    "Americano",
-    "Espreso",
-    "Cappuccino",
+    "Mojito",
+    "Es Degan",
+    "Es Teh",
   ];
   List coffeePrice = [
     50000,
@@ -70,188 +70,196 @@ class _NoncoffeeState extends State<Noncoffee> {
     final width = mediaQuery.size.width;
     final heigth = mediaQuery.size.height;
     return Scaffold(
+      appBar: AppBar(title: Text("Non Coffee"),),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            return SizedBox(
-              width: double.infinity,
-              child: Card(
-                clipBehavior: Clip.hardEdge,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${index + 1}. ${coffeeName[index]}",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      Row(
-                        children: [
-                          Card(
-                            clipBehavior: Clip.hardEdge,
-                            child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: Image.asset(
-                                  "assets/images/americano.jpg",
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            "Rp.${coffeePrice[index]}",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                              style: ButtonStyle(
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      clipBehavior: Clip.hardEdge,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "${index + 1}. ${coffeeName[index]}",
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.w500),
+                            ),
+                            Row(
+                              children: [
+                                Card(
+                                  clipBehavior: Clip.hardEdge,
+                                  child: SizedBox(
+                                      height: 100,
+                                      width: 100,
+                                      child: Image.asset(
+                                        "assets/images/mojito.jpg",
+                                        fit: BoxFit.cover,
+                                      )),
                                 ),
-                                backgroundColor:
-                                MaterialStateProperty.all<Color>(
-                                    Colors.green),
-                              ),
-                              onPressed: () {
-                                showModalBottomSheet(
-                                  backgroundColor: Colors.transparent,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    int amount = 1;
-                                    int totalamountPrice = coffeePrice[index];
-                                    return StatefulBuilder(
-                                      builder: (BuildContext context,
-                                          StateSetter setState) {
-                                        return Container(
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(20.0),
-                                            ),
-                                          ),
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "${coffeeName[index]}",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                        FontWeight.w500),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Rp.${coffeePrice[index]}",
+                                  style: TextStyle(
+                                      fontSize: 20, fontWeight: FontWeight.w500),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                    style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.green),
+                                    ),
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          int amount = 1;
+                                          int totalamountPrice = coffeePrice[index];
+                                          return StatefulBuilder(
+                                            builder: (BuildContext context,
+                                                StateSetter setState) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius: BorderRadius.vertical(
+                                                    top: Radius.circular(20.0),
                                                   ),
-                                                  IconButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      icon: Icon(Icons.clear)),
-                                                ],
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                  "Americano adalah minuman kopi yang sempurna untuk penggemar kopi yang menginginkan rasa yang kuat namun tetap segar.Americano menawarkan kombinasi yang sempurna antara kekayaan kopi dan kelegitan yang menyegarkan."),
-                                              Divider(),
-                                              Row(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            if (amount > 1) {
-                                                              setState(() {
-                                                                amount--;
-                                                              });
-                                                            }
-                                                          },
-                                                          icon: Icon(
-                                                              Icons.remove)),
-                                                      Text("$amount"),
-                                                      IconButton(
-                                                          onPressed: () {
-                                                            setState(() {
-                                                              amount++;
-                                                              totalamountPrice =
-                                                                  coffeePrice[
-                                                                  index] *
-                                                                      amount;
-                                                            });
-                                                          },
-                                                          icon:
-                                                          Icon(Icons.add)),
-                                                    ],
-                                                  ),
-                                                  Expanded(
-                                                    child: ElevatedButton(
-                                                        style: ButtonStyle(
-                                                          shape: MaterialStateProperty
-                                                              .all<
-                                                              RoundedRectangleBorder>(
-                                                            RoundedRectangleBorder(
-                                                              borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                  8),
-                                                            ),
-                                                          ),
-                                                          backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all<Color>(
-                                                              Colors
-                                                                  .green),
+                                                ),
+                                                padding: EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          "${coffeeName[index]}",
+                                                          style: TextStyle(
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                              FontWeight.w500),
                                                         ),
-                                                        onPressed: () {
-                                                          addCart(index, amount,
-                                                              totalamountPrice);
-                                                        },
-                                                        child: Text(
-                                                            "Add ${amount * coffeePrice[index]} ")),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                ).then((value) {
-                                  setState(() {});
-                                });
-                              },
-                              child: Text("Add to Cart +")),
-                        ],
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(context);
+                                                            },
+                                                            icon: Icon(Icons.clear)),
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 5,
+                                                    ),
+                                                    Text(
+                                                        "Americano adalah minuman kopi yang sempurna untuk penggemar kopi yang menginginkan rasa yang kuat namun tetap segar.Americano menawarkan kombinasi yang sempurna antara kekayaan kopi dan kelegitan yang menyegarkan."),
+                                                    Divider(),
+                                                    Row(
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  if (amount > 1) {
+                                                                    setState(() {
+                                                                      amount--;
+                                                                    });
+                                                                  }
+                                                                },
+                                                                icon: Icon(
+                                                                    Icons.remove)),
+                                                            Text("$amount"),
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    amount++;
+                                                                    totalamountPrice =
+                                                                        coffeePrice[
+                                                                        index] *
+                                                                            amount;
+                                                                  });
+                                                                },
+                                                                icon:
+                                                                Icon(Icons.add)),
+                                                          ],
+                                                        ),
+                                                        Expanded(
+                                                          child: ElevatedButton(
+                                                              style: ButtonStyle(
+                                                                shape: MaterialStateProperty
+                                                                    .all<
+                                                                    RoundedRectangleBorder>(
+                                                                  RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                        8),
+                                                                  ),
+                                                                ),
+                                                                backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all<Color>(
+                                                                    Colors
+                                                                        .green),
+                                                              ),
+                                                              onPressed: () {
+                                                                addCart(index, amount,
+                                                                    totalamountPrice);
+                                                              },
+                                                              child: Text(
+                                                                  "Add ${amount * coffeePrice[index]} ")),
+                                                        )
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
+                                      ).then((value) {
+                                        setState(() {});
+                                      });
+                                    },
+                                    child: Text("Add to Cart +")),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
-            );
-          },
+            ),
+            SizedBox(height: 50,)
+          ],
         ),
       ),
       floatingActionButton:
@@ -271,6 +279,7 @@ class _NoncoffeeState extends State<Noncoffee> {
                 child: Container(
                     width: width,
                     decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: Colors.green, // Set the desired border color here

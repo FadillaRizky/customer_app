@@ -73,6 +73,7 @@ class _CoffeeState extends State<Coffee> {
     final width = mediaQuery.size.width;
     final heigth = mediaQuery.size.height;
     return Scaffold(
+      appBar: AppBar(title: Text("Drink"),),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
@@ -274,6 +275,7 @@ class _CoffeeState extends State<Coffee> {
                 child: Container(
                     width: width,
                     decoration: BoxDecoration(
+                        color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: Colors.green, // Set the desired border color here
