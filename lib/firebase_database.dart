@@ -8,24 +8,16 @@ class Firebase {
   static void order(Map<String,dynamic> data)async{
     DatabaseInstance? db = DatabaseInstance();
     DatabaseReference dbRef = FirebaseDatabase.instance.ref().child('orderan');
-    DatabaseReference meja = FirebaseDatabase.instance.ref().child("meja").child(data['meja_uid'].toString());
-    DataSnapshot snapshot = await meja.get();
-
-    Map mapMeja = snapshot.value as Map;
     
     await db!.database();
     db.all().then((List<ProductModel> value){
       final key = dbRef.push().key;
       int subTotal = 0;
 
-      meja.set({
-        "status":"penuh"
-      });
-
       dbRef.child(key!).set({
         "create_at": DateFormat('dd-MM-yyyy HH:mm:ss').parse(DateTime.now().toString()),
         "name_customer": data['name_customer'],
-        "no_meja": mapMeja['no_meja'],
+        "no_meja": data['no_meja'],
         "catatan": data['catatan'],
         "status":"pending",
       });
