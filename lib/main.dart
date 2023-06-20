@@ -1,3 +1,4 @@
+import 'package:customer_app/firebase_options.dart';
 import 'package:customer_app/list_menu.dart';
 import 'package:customer_app/list_menu/noncoffee.dart';
 import 'package:customer_app/list_menu/noodle.dart';
@@ -16,7 +17,10 @@ import 'menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
