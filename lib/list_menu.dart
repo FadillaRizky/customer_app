@@ -11,6 +11,11 @@ class _MenuListState extends State<MenuList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Menu"),
+      backgroundColor: Colors.green,
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -18,9 +23,13 @@ class _MenuListState extends State<MenuList> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Drinks",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),
-                SizedBox(height: 10,),
+                Text(
+                  "Drinks",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, "/coffee");
@@ -28,8 +37,7 @@ class _MenuListState extends State<MenuList> {
                   child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Stack(
                       children: [
                         SizedBox(
@@ -38,14 +46,18 @@ class _MenuListState extends State<MenuList> {
                             child: Image.asset("assets/images/coffee.jpg",
                                 fit: BoxFit.fitWidth)),
                         Positioned.fill(
-                            child: Center(child: Text("Coffee",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 30),)))
+                            child: Center(
+                                child: Text(
+                          "Coffee",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )))
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, "/noncoffee");
@@ -53,8 +65,7 @@ class _MenuListState extends State<MenuList> {
                   child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Stack(
                       children: [
                         SizedBox(
@@ -63,50 +74,61 @@ class _MenuListState extends State<MenuList> {
                             child: Image.asset("assets/images/mojito.jpg",
                                 fit: BoxFit.fitWidth)),
                         Positioned.fill(
-                            child: Center(child: Text("Non Coffee",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 30),)))
+                            child: Center(
+                                child: Text(
+                          "Non Coffee",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )))
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, "/juice");
                   },
                   child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Stack(
                       children: [
                         SizedBox(
                             height: 75,
                             width: double.infinity,
-                            child: Image.asset(
-                                "assets/images/juice.jpg", fit: BoxFit.fitWidth)),
+                            child: Image.asset("assets/images/juice.jpg",
+                                fit: BoxFit.fitWidth)),
                         Positioned.fill(
-                            child: Center(child: Text("Juice", style: TextStyle(
-                                color: Colors.white, fontSize: 30),)))
+                            child: Center(
+                                child: Text(
+                          "Juice",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )))
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 20,),
-                Text("Food",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Food",
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, "/rice");
                   },
                   child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Stack(
                       children: [
                         SizedBox(
@@ -115,22 +137,26 @@ class _MenuListState extends State<MenuList> {
                             child: Image.asset("assets/images/nasigoreng.jpg",
                                 fit: BoxFit.fitWidth)),
                         Positioned.fill(
-                            child: Center(child: Text("Rice", style: TextStyle(
-                                color: Colors.white, fontSize: 30),)))
+                            child: Center(
+                                child: Text(
+                          "Rice",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )))
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, "/noodle");
                   },
                   child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Stack(
                       children: [
                         SizedBox(
@@ -139,37 +165,46 @@ class _MenuListState extends State<MenuList> {
                             child: Image.asset("assets/images/migoreng.jpg",
                                 fit: BoxFit.fitWidth)),
                         Positioned.fill(
-                            child: Center(child: Text("Noodle", style: TextStyle(
-                                color: Colors.white, fontSize: 30),)))
+                            child: Center(
+                                child: Text(
+                          "Noodle",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )))
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 5,
+                ),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.pushNamed(context, "/pizza");
                   },
                   child: Card(
                     clipBehavior: Clip.hardEdge,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10))),
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                     child: Stack(
                       children: [
                         SizedBox(
                             height: 75,
                             width: double.infinity,
-                            child: Image.asset(
-                                "assets/images/pizza.jpg", fit: BoxFit.fitWidth)),
+                            child: Image.asset("assets/images/pizza.jpg",
+                                fit: BoxFit.fitWidth)),
                         Positioned.fill(
-                            child: Center(child: Text("Pizza", style: TextStyle(
-                                color: Colors.white, fontSize: 30),)))
+                            child: Center(
+                                child: Text(
+                          "Pizza",
+                          style: TextStyle(color: Colors.white, fontSize: 30),
+                        )))
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 5,)
+                SizedBox(
+                  height: 5,
+                )
               ],
             ),
           ),

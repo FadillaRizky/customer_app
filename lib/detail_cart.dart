@@ -34,6 +34,7 @@ class _DetailCartState extends State<DetailCart> {
           title: Text("Pesanan Saya"),
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: FutureBuilder<List<ProductModel>>(
@@ -60,7 +61,7 @@ class _DetailCartState extends State<DetailCart> {
               height: 20,
             ),
             Text(
-              "Catatan",
+              "  Catatan",style: Constants.subtitle,
             ),
             SizedBox(
               height: 10,
@@ -83,30 +84,35 @@ class _DetailCartState extends State<DetailCart> {
 
   Widget showListCart(
       AsyncSnapshot<List<ProductModel>> snapshot, BuildContext context) {
+    Future delete(int id) async {
+      await databaseInstance!.delete(id);
+      setState(() {});
+    }
+
     return ListView.builder(
       itemCount: snapshot.data!.length,
       itemBuilder: (context, index) {
-        return Container(
-          height: 50,
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(snapshot.data![index].nameProduct!),
-              Container(
-
-                child: Row(
-                  children: [
-                    IconButton(onPressed: () {}, icon: Icon(Icons.remove)),
-                    Text(snapshot.data![index].qty!),
-                    IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-                  ],
-                ),
+        return Column(
+          children: [
+            Container(
+              height: 50,
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(snapshot.data![index].nameProduct!),
+                  IconButton(
+                    onPressed: () {
+                      delete(snapshot.data![index].id!);
+                    },
+                    icon: Icon(Icons.clear),
+                  )
+                ],
               ),
-            ],
-          ),
-
+            ),
+            Divider()
+          ],
         );
       },
     );
