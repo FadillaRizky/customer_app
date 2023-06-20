@@ -1,3 +1,4 @@
+import 'package:customer_app/firebase_database.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -68,6 +69,7 @@ class _DetailCartState extends State<DetailCart> {
             SizedBox(
               width: double.infinity,
               child: TextField(
+                minLines: 1,
                 maxLines: 5,
                 controller: noteController,
                 decoration: InputDecoration(

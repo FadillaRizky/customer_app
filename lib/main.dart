@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/menu',
       routes: {
         '/': (context) => ScanBarcode(),
         '/menu': (context) => MenuList(),
