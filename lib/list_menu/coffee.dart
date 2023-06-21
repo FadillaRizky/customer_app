@@ -91,8 +91,13 @@ class _CoffeeState extends State<Coffee> {
             if (snapshot.hasData) {
               var data = snapshot.docs.where((data) {
                 var val = data.value as Map;
-                return val['kategori'] == "kopi";
+                return val['kategori'] == "coffee";
               }).toList();
+              if(data.length <= 0){
+                return Center(
+                  child: Text("Menu untuk kategori ini kosong"),
+                );
+              }
               return ListView.builder(
                 itemCount: data.length,
                 itemBuilder: (context, index) {
@@ -129,7 +134,7 @@ class _CoffeeState extends State<Coffee> {
                                   width: 10,
                                 ),
                                 Text(
-                                  "Rp.${intlFormat.format(int.parse(val['harga']))}",
+                                  "Rp.${intlFormat.format(val['harga'])}",
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500),
@@ -158,7 +163,7 @@ class _CoffeeState extends State<Coffee> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           int amount = 1;
-                                          int totalamountPrice = int.parse(val['harga']);
+                                          int totalamountPrice = val['harga'];
                                           return StatefulBuilder(
                                             builder: (BuildContext context,
                                                 StateSetter setState) {
@@ -226,7 +231,7 @@ class _CoffeeState extends State<Coffee> {
                                                                   setState(() {
                                                                     amount++;
                                                                     totalamountPrice =
-                                                                        int.parse(val['harga']) *
+                                                                        val['harga'] *
                                                                             amount;
                                                                   });
                                                                 },
@@ -256,12 +261,12 @@ class _CoffeeState extends State<Coffee> {
                                                               onPressed: () {
                                                                 addCart(
                                                                     val['name'],
-                                                                    int.parse(val['harga']),
+                                                                    val['harga'],
                                                                     amount,
                                                                     totalamountPrice);
                                                               },
                                                               child: Text(
-                                                                  "Add Rp.${intlFormat.format(amount * int.parse(val['harga']))} ")),
+                                                                  "Add Rp.${intlFormat.format(amount * val['harga'])} ")),
                                                         )
                                                       ],
                                                     )
