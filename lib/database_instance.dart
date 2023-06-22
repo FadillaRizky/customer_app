@@ -41,6 +41,17 @@ class DatabaseInstance {
         data.map((e) => ProductModel.fromJson(e)).toList();
     return result;
   }
+  Future<void> clearDatabase() async {
+    String databasesPath = await getDatabasesPath();
+    String path = join(databasesPath, 'my_database.db');
+
+    await deleteDatabase(path);
+
+    Database database = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+        });
+    await database.close();
+  }
 
   Future<int> insert(Map<String, dynamic> row) async {
     final query = await _database!.insert(table, row);

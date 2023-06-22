@@ -139,7 +139,9 @@ class _QrViewState extends State<QrView> {
                           Text("Nomer Meja : ${meja}",style: TextStyle(
             fontSize: 20, overflow: TextOverflow.ellipsis)),
                           SizedBox(height: 10,),
-                          ElevatedButton(onPressed: (){}, child: Text("Pesan Sekarang",style: TextStyle(
+                          ElevatedButton(onPressed: (){
+                            submitBarcode();
+                          }, child: Text("Pesan Sekarang",style: TextStyle(
           fontSize: 20, overflow: TextOverflow.ellipsis)))
                         ],
                       )

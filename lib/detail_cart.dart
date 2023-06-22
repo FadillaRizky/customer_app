@@ -1,7 +1,9 @@
 import 'package:customer_app/firebase_database.dart';
+import 'package:customer_app/list_menu.dart';
 import 'package:customer_app/shared_pref.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:intl/intl.dart' as intl;
 
@@ -143,11 +145,19 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: InkWell(
                 onTap: () {
+                  if (namaController.text == "") {
+                    EasyLoading.showInfo("Nama Pelanggan Kosong",dismissOnTap: true);
+                  }
+                  if (noteController.text == "") {
+                    EasyLoading.showInfo("Catatan Kosong",dismissOnTap: true);
+                  }
                   Firebase.order({
                     'no_meja' : noMeja.toString(),
                     'name_customer': namaController.text,
                     'catatan': noteController.text,
                   });
+                  databaseInstance!.clearDatabase();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>MenuList() ));
                 },
                 child: Center(
                   child: Text(

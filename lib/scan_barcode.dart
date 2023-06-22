@@ -15,6 +15,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset("assets/images/logo.jpg"),
               SizedBox(height: 20,),
