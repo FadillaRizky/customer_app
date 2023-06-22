@@ -1,9 +1,9 @@
 import 'package:customer_app/firebase_database.dart';
+import 'package:customer_app/shared_pref.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:intl/intl.dart' as intl;
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'database_instance.dart';
 import 'model/product_model.dart';
@@ -16,15 +16,22 @@ class DetailCart extends StatefulWidget {
 }
 
 class _DetailCartState extends State<DetailCart> {
-  TextEditingController namaController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   final intlFormat = intl.NumberFormat("#,##0");
-  bool load = false;
   DatabaseInstance? databaseInstance;
+
+
+  String? noMeja;
 
   Future initDatabase() async {
     await databaseInstance!.database();
     setState(() {});
+  }
+
+  initSpklist() async {
+    await LoginPref.getPref().then((value) {
+      noMeja = value.noMeja;
+    });
   }
 
   @override
@@ -71,15 +78,16 @@ class _DetailCartState extends State<DetailCart> {
               height: 20,
             ),
             Text(
-              "  Nama Customer",
+              "  Nomor Meja",
               style: Constants.subtitle,
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               width: double.infinity,
-              child: TextField(
+              child: TextFormField(
                 minLines: 1,
-                controller: namaController,
+                initialValue: noMeja,
+                enabled: false,
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(8),
                     border: OutlineInputBorder(
@@ -114,22 +122,7 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: InkWell(
                 onTap: () {
-                  if (load == false) {
-                    if (namaController.text != null) {
-                      Firebase.order({
-                        'no_meja' : 1,
-                        'name_customer': namaController.text,
-                        'catatan': noteController.text,
-                      });
-                      setState(() {
-                        load = true;
-                        EasyLoading.show(status: 'loading...',dismissOnTap: true);
-                      });
-                      Navigator.of(context).pushReplacementNamed('/');
-                      return;
-                    }
-                    EasyLoading.showError('Please insert your name',dismissOnTap: true);
-                  }
+                  Firebase.order({});
                 },
                 child: Center(
                   child: Text(
