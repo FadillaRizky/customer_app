@@ -30,11 +30,10 @@ class _QrViewState extends State<QrView> {
 
   }
   noMeja()async{
-    print(result!.code!);
     DataSnapshot snapshot = await FirebaseDatabase.instance.ref().child("meja").child(result!.code!).get();
     var data = snapshot.value as Map;
     setState(() {
-      if(result!.code! != snapshot.key){
+      if(result!.code! == snapshot.key){
         meja = data['no_meja'];
       }
     });

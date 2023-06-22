@@ -24,16 +24,14 @@ class Firebase {
       });
 
       for (var x in value) {
-        print(x.id);
-        print(x.nameProduct);
-        // dbRef.child(key!).child("list_order").child("${x.id}").update({
-        //   "nama":x.nameProduct,
-        //   "qty":x.qty,
-        //   "satuan":x.price,
-        //   "total_harga":x.totalPrice,
-        // });
-        // subTotal += int.parse(x.totalPrice.toString());
-        // db.delete(x.id.toString());
+        dbRef.child(key!).child("list_order").child("${x.id}").update({
+          "nama":x.nameProduct,
+          "qty":x.qty,
+          "satuan":x.price,
+          "total_harga":x.totalPrice,
+        });
+        subTotal += int.parse(x.totalPrice.toString());
+        db.delete(x.id.toString());
       }
       dbRef.child(key!).update({
         "total_harga": subTotal
