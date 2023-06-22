@@ -1,5 +1,4 @@
 import 'package:customer_app/firebase_database.dart';
-import 'package:customer_app/shared_pref.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
@@ -20,25 +19,15 @@ class _DetailCartState extends State<DetailCart> {
   final intlFormat = intl.NumberFormat("#,##0");
   DatabaseInstance? databaseInstance;
 
-  String? NoMeja;
-
   Future initDatabase() async {
     await databaseInstance!.database();
     setState(() {});
-  }
-
-  initnoMeja() async {
-
-    await LoginPref.getPref().then((value) {
-      NoMeja = value.noMeja;
-    });
   }
 
   @override
   void initState() {
     super.initState();
     databaseInstance = DatabaseInstance();
-    initnoMeja();
     initDatabase();
   }
 
@@ -53,7 +42,6 @@ class _DetailCartState extends State<DetailCart> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("NOMOR MEJA = ${NoMeja ?? ""}"),
             Expanded(
               child: FutureBuilder<List<ProductModel>>(
                 future: databaseInstance!.all(),
@@ -78,24 +66,6 @@ class _DetailCartState extends State<DetailCart> {
             ),
             SizedBox(
               height: 20,
-            ),
-            Text(
-              "  Nomor Meja",
-              style: Constants.subtitle,
-            ),
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              width: double.infinity,
-              child: TextFormField(
-                initialValue: NoMeja ?? "",
-                minLines: 1,
-                enabled: false,
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(8),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    )),
-              ),
             ),
             Text(
               "  Catatan",
@@ -130,9 +100,10 @@ class _DetailCartState extends State<DetailCart> {
                   child: Text(
                     "Order",
                     style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white
+                    ),
                   ),
                 ),
               ),
