@@ -43,9 +43,10 @@ class _DetailCartState extends State<DetailCart> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     if (snapshot.data!.length == 0) {
-                      return Center(
-                        child: Text("Produk Belum Ditambahkan"),
-                      );
+                      return Container();
+                      // return Center(
+                      //   child: Text("Produk Belum Ditambahkan"),
+                      // );
                     }
                     return showListCart(snapshot, context);
                   }

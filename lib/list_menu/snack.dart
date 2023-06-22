@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart' as intl;
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _SnackState extends State<Snack> {
     setState(() {});
   }
 
-  void addCart(nama,harga, amount, totalamountPrice) async {
+  void addCart(nama, harga, amount, totalamountPrice) async {
     await databaseInstance.insert({
       "name_product": nama,
       "price": harga,
@@ -35,6 +36,7 @@ class _SnackState extends State<Snack> {
     Navigator.of(context).pop();
     setState(() {});
   }
+
   Future getTotal() async {
     var totalprice;
     var dbClient = await databaseInstance!.database();
@@ -48,10 +50,12 @@ class _SnackState extends State<Snack> {
     }
     return totalprice;
   }
+
   Stream<int> countStream() async* {
     int total = await getTotal();
     yield total;
   }
+
   List coffeeName = [
     "Snack Mozzarella",
     "Snack Peperonni",
@@ -75,7 +79,9 @@ class _SnackState extends State<Snack> {
     final width = mediaQuery.size.width;
     final heigth = mediaQuery.size.height;
     return Scaffold(
-      appBar: AppBar(title: Text("Snack"),),
+      appBar: AppBar(
+        title: Text("Snack"),
+      ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
         child: Column(
@@ -90,7 +96,7 @@ class _SnackState extends State<Snack> {
                       var val = data.value as Map;
                       return val['kategori'] == "snack";
                     }).toList();
-                    if(data.length <= 0){
+                    if (data.length <= 0) {
                       return Center(
                         child: Text("Menu untuk kategori ini kosong"),
                       );
@@ -104,17 +110,13 @@ class _SnackState extends State<Snack> {
                           child: Card(
                             clipBehavior: Clip.hardEdge,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(10))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "${index + 1}. ${val['name']}",
-                                    style: TextStyle(
-                                        fontSize: 18, fontWeight: FontWeight.w500),
-                                  ),
                                   Row(
                                     children: [
                                       Card(
@@ -130,11 +132,36 @@ class _SnackState extends State<Snack> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text(
-                                        "Rp.${intlFormat.format(val['harga'])}",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${toBeginningOfSentenceCase(val['name'])}",
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "Rp.${intlFormat.format(val['harga'])}",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            "${toBeginningOfSentenceCase(val['deskripsi'])}",
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
                                       )
                                     ],
                                   ),
@@ -151,31 +178,38 @@ class _SnackState extends State<Snack> {
                                               ),
                                             ),
                                             backgroundColor:
-                                                MaterialStateProperty.all<Color>(
-                                                    Colors.green),
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.green),
                                           ),
                                           onPressed: () {
                                             showModalBottomSheet(
-                                              backgroundColor: Colors.transparent,
+                                              backgroundColor:
+                                                  Colors.transparent,
                                               context: context,
                                               builder: (BuildContext context) {
                                                 int amount = 1;
-                                                int totalamountPrice = val['harga'];
+                                                int totalamountPrice =
+                                                    val['harga'];
                                                 return StatefulBuilder(
-                                                  builder: (BuildContext context,
+                                                  builder: (BuildContext
+                                                          context,
                                                       StateSetter setState) {
                                                     return Container(
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius.vertical(
-                                                          top: Radius.circular(20.0),
+                                                            BorderRadius
+                                                                .vertical(
+                                                          top: Radius.circular(
+                                                              20.0),
                                                         ),
                                                       ),
-                                                      padding: EdgeInsets.all(16.0),
+                                                      padding:
+                                                          EdgeInsets.all(16.0),
                                                       child: Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         mainAxisSize:
                                                             MainAxisSize.min,
                                                         children: <Widget>[
@@ -185,33 +219,37 @@ class _SnackState extends State<Snack> {
                                                                     .spaceBetween,
                                                             children: [
                                                               Text(
-                                                                "${val['name']}",
+                                                                "${toBeginningOfSentenceCase(val['name'])}",
                                                                 style: TextStyle(
-                                                                    fontSize: 20,
+                                                                    fontSize:
+                                                                        20,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
                                                               ),
                                                               IconButton(
-                                                                  onPressed: () {
+                                                                  onPressed:
+                                                                      () {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  icon: Icon(
-                                                                      Icons.clear)),
+                                                                  icon: Icon(Icons
+                                                                      .clear)),
                                                             ],
                                                           ),
                                                           SizedBox(
                                                             height: 5,
                                                           ),
-                                                          Text("${val['deskripsi']}"),
+                                                          Text(
+                                                              "${toBeginningOfSentenceCase(val['deskripsi'])}"),
                                                           Divider(),
                                                           Row(
                                                             children: [
                                                               Row(
                                                                 children: [
                                                                   IconButton(
-                                                                      onPressed: () {
+                                                                      onPressed:
+                                                                          () {
                                                                         if (amount >
                                                                             1) {
                                                                           setState(
@@ -220,50 +258,50 @@ class _SnackState extends State<Snack> {
                                                                           });
                                                                         }
                                                                       },
-                                                                      icon: Icon(Icons
-                                                                          .remove)),
-                                                                  Text("$amount"),
+                                                                      icon: Icon(
+                                                                          Icons
+                                                                              .remove)),
+                                                                  Text(
+                                                                      "$amount"),
                                                                   IconButton(
-                                                                      onPressed: () {
-                                                                        setState(() {
+                                                                      onPressed:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
                                                                           amount++;
                                                                           totalamountPrice =
-                                                                              val['harga'] *
-                                                                                  amount;
+                                                                              val['harga'] * amount;
                                                                         });
                                                                       },
                                                                       icon: Icon(
-                                                                          Icons.add)),
+                                                                          Icons
+                                                                              .add)),
                                                                 ],
                                                               ),
                                                               Expanded(
-                                                                child: ElevatedButton(
-                                                                    style:
-                                                                        ButtonStyle(
-                                                                      shape: MaterialStateProperty
-                                                                          .all<
-                                                                              RoundedRectangleBorder>(
-                                                                        RoundedRectangleBorder(
-                                                                          borderRadius:
-                                                                              BorderRadius
-                                                                                  .circular(8),
+                                                                child:
+                                                                    ElevatedButton(
+                                                                        style:
+                                                                            ButtonStyle(
+                                                                          shape:
+                                                                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                                            RoundedRectangleBorder(
+                                                                              borderRadius: BorderRadius.circular(8),
+                                                                            ),
+                                                                          ),
+                                                                          backgroundColor:
+                                                                              MaterialStateProperty.all<Color>(Colors.green),
                                                                         ),
-                                                                      ),
-                                                                      backgroundColor:
-                                                                          MaterialStateProperty.all<
-                                                                                  Color>(
-                                                                              Colors
-                                                                                  .green),
-                                                                    ),
-                                                                    onPressed: () {
-                                                                      addCart(
-                                                                          val['name'],
-                                                                          val['harga'],
-                                                                          amount,
-                                                                          totalamountPrice);
-                                                                    },
-                                                                    child: Text(
-                                                                        "Add Rp.${intlFormat.format(amount * val['harga'])} ")),
+                                                                        onPressed:
+                                                                            () {
+                                                                          addCart(
+                                                                              val['name'],
+                                                                              val['harga'],
+                                                                              amount,
+                                                                              totalamountPrice);
+                                                                        },
+                                                                        child: Text(
+                                                                            "Add Rp.${intlFormat.format(amount * val['harga'])} ")),
                                                               )
                                                             ],
                                                           )
@@ -294,97 +332,107 @@ class _SnackState extends State<Snack> {
                 },
               ),
             ),
-            SizedBox(height: 50,)
+            SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),
-      floatingActionButton:
-      databaseInstance != null
+      floatingActionButton: databaseInstance != null
           ? FutureBuilder<List<ProductModel>>(
-        future: databaseInstance!.all(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.data!.length == 0) {
-              return Center(
-                child: Text("Produk Belum Ditambahkan"),
-              );
-            }
-            return FittedBox(
-              child: Padding(
-                padding: EdgeInsets.only(left: 30),
-                child: Container(
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: Colors.green, // Set the desired border color here
-                        width: 1, // Set the desired border width here
-                      ),
-                    ),
+              future: databaseInstance!.all(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data!.length == 0) {
+                    return Center(
+                      child: Text("Produk Belum Ditambahkan"),
+                    );
+                  }
+                  return FittedBox(
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("${snapshot.data!.length} ITEM(S)",style: Constants.subtitle,),
-                              StreamBuilder(
-                                  stream: countStream(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState == ConnectionState.waiting) {
-                                      return Text(
-                                        "0",
-                                        style: TextStyle(fontSize: 20),
-                                      );
-                                    } else {
-                                      totalHarga = snapshot.data;
-                                      return Text(
-                                        Currency.rupiah.format(snapshot.data),
-                                        style: Constants.subtitle,
-                                      );
-                                    }
-                                  })
-
-                            ],
+                      padding: EdgeInsets.only(left: 30),
+                      child: Container(
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: Colors
+                                  .green, // Set the desired border color here
+                              width: 1, // Set the desired border width here
+                            ),
                           ),
-                          TextButton(onPressed: (){
-                            Navigator.pushNamed(context, "/detailcart");
-                          }, child: Text("Lihat Pesanan"))
-                        ],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${snapshot.data!.length} ITEM(S)",
+                                      style: Constants.subtitle,
+                                    ),
+                                    StreamBuilder(
+                                        stream: countStream(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return Text(
+                                              "0",
+                                              style: TextStyle(fontSize: 20),
+                                            );
+                                          } else {
+                                            totalHarga = snapshot.data;
+                                            return Text(
+                                              Currency.rupiah
+                                                  .format(snapshot.data),
+                                              style: Constants.subtitle,
+                                            );
+                                          }
+                                        })
+                                  ],
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, "/detailcart");
+                                    },
+                                    child: Text("Lihat Pesanan"))
+                              ],
+                            ),
+                          )),
+                    ),
+                  );
+                }
+                if (snapshot.hasError) {
+                  Center(child: Text("${snapshot.error}"));
+                }
+                return Padding(
+                  padding: EdgeInsets.only(left: 30),
+                  child: Container(
+                      width: width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color:
+                              Colors.green, // Set the desired border color here
+                          width: 1, // Set the desired border width here
+                        ),
                       ),
-                    )),
-              ),
-            );
-          }
-          if (snapshot.hasError) {
-            Center(child: Text("${snapshot.error}"));
-          }
-          return Padding(
-            padding: EdgeInsets.only(left: 30),
-            child: Container(
-                width: width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: Colors.green, // Set the desired border color here
-                    width: 1, // Set the desired border width here
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("0 ITEM"),
-                    ],
-                  ),
-                )),
-          );
-        },
-      )
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("0 ITEM"),
+                          ],
+                        ),
+                      )),
+                );
+              },
+            )
           : SizedBox(),
     );
   }

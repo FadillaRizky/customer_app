@@ -3,6 +3,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+
 
 import '../utils/currency.dart';
 import '../database_instance.dart';
@@ -80,7 +82,7 @@ class _CoffeeState extends State<Coffee> {
     final heigth = mediaQuery.size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Drink"),
+        title: Text("Coffee"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -113,11 +115,6 @@ class _CoffeeState extends State<Coffee> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${index + 1}. ${val['name']}",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
                             Row(
                               children: [
                                 Card(
@@ -133,11 +130,34 @@ class _CoffeeState extends State<Coffee> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  "Rp.${intlFormat.format(val['harga'])}",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${toBeginningOfSentenceCase(val['name'])}",
+                                      style: TextStyle(
+                                          fontSize: 20, fontWeight: FontWeight.w700),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "Rp.${intlFormat.format(val['harga'])}",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      "${toBeginningOfSentenceCase(val['deskripsi'])}",
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -188,7 +208,7 @@ class _CoffeeState extends State<Coffee> {
                                                               .spaceBetween,
                                                       children: [
                                                         Text(
-                                                          "${val['name']}",
+                                                          "${toBeginningOfSentenceCase(val['name'])}",
                                                           style: TextStyle(
                                                               fontSize: 20,
                                                               fontWeight:
@@ -207,7 +227,7 @@ class _CoffeeState extends State<Coffee> {
                                                     SizedBox(
                                                       height: 5,
                                                     ),
-                                                    Text("${val['deskripsi']}"),
+                                                    Text("${toBeginningOfSentenceCase(val['deskripsi'])}"),
                                                     Divider(),
                                                     Row(
                                                       children: [
