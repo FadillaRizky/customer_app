@@ -83,34 +83,34 @@ class _MenuListState extends State<MenuList> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 5,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/juice");
-                  },
-                  child: Card(
-                    clipBehavior: Clip.hardEdge,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                            height: 75,
-                            width: double.infinity,
-                            child: Image.asset("assets/images/juice.jpg",
-                                fit: BoxFit.fitWidth)),
-                        Positioned.fill(
-                            child: Center(
-                                child: Text(
-                          "Juice",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
-                        )))
-                      ],
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 5,
+                // ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.pushNamed(context, "/juice");
+                //   },
+                //   child: Card(
+                //     clipBehavior: Clip.hardEdge,
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Stack(
+                //       children: [
+                //         SizedBox(
+                //             height: 75,
+                //             width: double.infinity,
+                //             child: Image.asset("assets/images/juice.jpg",
+                //                 fit: BoxFit.fitWidth)),
+                //         Positioned.fill(
+                //             child: Center(
+                //                 child: Text(
+                //           "Juice",
+                //           style: TextStyle(color: Colors.white, fontSize: 30),
+                //         )))
+                //       ],
+                //     ),
+                //   ),
+                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -121,34 +121,34 @@ class _MenuListState extends State<MenuList> {
                 SizedBox(
                   height: 10,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, "/rice");
-                  },
-                  child: Card(
-                    clipBehavior: Clip.hardEdge,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    child: Stack(
-                      children: [
-                        SizedBox(
-                            height: 75,
-                            width: double.infinity,
-                            child: Image.asset("assets/images/nasigoreng.jpg",
-                                fit: BoxFit.fitWidth)),
-                        Positioned.fill(
-                            child: Center(
-                                child: Text(
-                          "Rice",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
-                        )))
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
+                // GestureDetector(
+                //   onTap: () {
+                //     Navigator.pushNamed(context, "/rice");
+                //   },
+                //   child: Card(
+                //     clipBehavior: Clip.hardEdge,
+                //     shape: RoundedRectangleBorder(
+                //         borderRadius: BorderRadius.all(Radius.circular(10))),
+                //     child: Stack(
+                //       children: [
+                //         SizedBox(
+                //             height: 75,
+                //             width: double.infinity,
+                //             child: Image.asset("assets/images/nasigoreng.jpg",
+                //                 fit: BoxFit.fitWidth)),
+                //         Positioned.fill(
+                //             child: Center(
+                //                 child: Text(
+                //           "Rice",
+                //           style: TextStyle(color: Colors.white, fontSize: 30),
+                //         )))
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // SizedBox(
+                //   height: 5,
+                // ),
                 GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, "/noodle");
@@ -179,7 +179,7 @@ class _MenuListState extends State<MenuList> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, "/pizza");
+                    Navigator.pushNamed(context, "/snack");
                   },
                   child: Card(
                     clipBehavior: Clip.hardEdge,
@@ -195,7 +195,7 @@ class _MenuListState extends State<MenuList> {
                         Positioned.fill(
                             child: Center(
                                 child: Text(
-                          "Pizza",
+                          "Snack",
                           style: TextStyle(color: Colors.white, fontSize: 30),
                         )))
                       ],

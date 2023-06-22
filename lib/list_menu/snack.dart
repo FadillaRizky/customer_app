@@ -8,14 +8,14 @@ import '../model/product_model.dart';
 import '../utils/constants.dart';
 import '../utils/currency.dart';
 
-class Noodle extends StatefulWidget {
-  const Noodle({Key? key}) : super(key: key);
+class Snack extends StatefulWidget {
+  const Snack({Key? key}) : super(key: key);
 
   @override
-  State<Noodle> createState() => _NoodleState();
+  State<Snack> createState() => _SnackState();
 }
 
-class _NoodleState extends State<Noodle> {
+class _SnackState extends State<Snack> {
   DatabaseInstance databaseInstance = DatabaseInstance();
   final intlFormat = intl.NumberFormat("#,##0");
   int? totalHarga;
@@ -35,7 +35,6 @@ class _NoodleState extends State<Noodle> {
     Navigator.of(context).pop();
     setState(() {});
   }
-  
   Future getTotal() async {
     var totalprice;
     var dbClient = await databaseInstance!.database();
@@ -54,9 +53,9 @@ class _NoodleState extends State<Noodle> {
     yield total;
   }
   List coffeeName = [
-    "Indomie",
-    "Mi Sedaap",
-    "Ramen",
+    "Snack Mozzarella",
+    "Snack Peperonni",
+    "Snack Tuna",
   ];
   List coffeePrice = [
     50000,
@@ -76,7 +75,7 @@ class _NoodleState extends State<Noodle> {
     final width = mediaQuery.size.width;
     final heigth = mediaQuery.size.height;
     return Scaffold(
-      appBar: AppBar(title: Text("Noodle"),),
+      appBar: AppBar(title: Text("Snack"),),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
         child: Column(
@@ -89,7 +88,7 @@ class _NoodleState extends State<Noodle> {
                   if (snapshot.hasData) {
                     var data = snapshot.docs.where((data) {
                       var val = data.value as Map;
-                      return val['kategori'] == "noodle";
+                      return val['kategori'] == "snack";
                     }).toList();
                     if(data.length <= 0){
                       return Center(

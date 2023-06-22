@@ -2,8 +2,8 @@ import 'package:customer_app/firebase_options.dart';
 import 'package:customer_app/list_menu.dart';
 import 'package:customer_app/list_menu/noncoffee.dart';
 import 'package:customer_app/list_menu/noodle.dart';
-import 'package:customer_app/list_menu/pizza.dart';
-import 'package:customer_app/list_menu/rice.dart';
+import 'package:customer_app/list_menu/snack.dart';
+// import 'package:customer_app/list_menu/rice.dart';
 import 'package:customer_app/scan_barcode.dart';
 import 'package:customer_app/view_barcode.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 
 import 'detail_cart.dart';
 import 'list_menu/coffee.dart';
-import 'list_menu/juice.dart';
 import 'menu.dart';
 
 
@@ -39,10 +38,9 @@ class MyApp extends StatelessWidget {
         /// list menu
         '/coffee': (context) => Coffee(),
         '/noncoffee': (context) => Noncoffee(),
-        '/juice': (context) => Juice(),
-        '/rice': (context) => Rice(),
+        // '/rice': (context) => Rice(),
         '/noodle': (context) => Noodle(),
-        '/pizza': (context) => Pizza(),
+        '/snack': (context) => Snack(),
 
         /// detail cart
         '/detailcart': (context) => DetailCart(),

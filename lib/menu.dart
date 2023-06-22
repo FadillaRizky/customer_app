@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import 'list_menu/coffee.dart';
 import 'database_instance.dart';
-import 'list_menu/juice.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key,}) : super(key: key);
@@ -36,8 +35,6 @@ class _MenuState extends State<Menu> {
     switch (_currentSelection) {
       case DrawerSelection.Profile:
         return Coffee();
-      case DrawerSelection.Settings:
-        return Juice();
       default:
         return Coffee();
     }
