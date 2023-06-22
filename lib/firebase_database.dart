@@ -15,7 +15,7 @@ class Firebase {
       int subTotal = 0;
 
       dbRef.child(key!).set({
-        "create_at": DateFormat('dd-MM-yyyy HH:mm:ss').parse(DateTime.now().toString()),
+        "create_at": DateFormat('yyyy-MM-dd HH:mm:ss').parse(DateTime.now().toString()),
         "name_customer": data['name_customer'],
         "no_meja": data['no_meja'],
         "catatan": data['catatan'],
