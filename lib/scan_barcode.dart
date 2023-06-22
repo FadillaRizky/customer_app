@@ -19,13 +19,29 @@ class _ScanBarcodeState extends State<ScanBarcode> {
             children: [
               Image.asset("assets/images/logo.jpg"),
               SizedBox(height: 20,),
-              SizedBox(
+              Container(
+                margin: EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 41, 185, 58),
+                    borderRadius: BorderRadius.circular(5)),
                 width: double.infinity,
-                child: ElevatedButton(onPressed: (){
-                  Navigator.pushNamed(context, "/qrview");
-                }, child: Text("Scan Meja"),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, "/qrview");
+                  },
+                  child: Center(
+                    child: Text(
+                      "Order",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
+                      ),
+                    ),
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),

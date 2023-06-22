@@ -41,14 +41,12 @@ class _DetailCartState extends State<DetailCart> {
   void initState() {
     super.initState();
     databaseInstance = DatabaseInstance();
-
     initDatabase();
     initnoMeja();
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: Text("Pesanan Saya"),
@@ -92,7 +90,7 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: TextFormField(
                 minLines: 1,
-                initialValue: noMeja!,
+                initialValue: noMeja,
                 enabled: false,
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(8),
@@ -200,7 +198,7 @@ class _DetailCartState extends State<DetailCart> {
                         width: 20,
                         height: 20,
                         child: Text(
-                          "${index + 1}. ",
+                          "${index + 1}.",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.w700),
                         ),
