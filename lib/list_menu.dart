@@ -13,7 +13,7 @@ class _MenuListState extends State<MenuList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Menu"),
-      backgroundColor: Colors.green,
+      backgroundColor: Color(0xFF399D44),
         elevation: 0,
       ),
       body: SafeArea(

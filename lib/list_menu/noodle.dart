@@ -81,6 +81,8 @@ class _NoodleState extends State<Noodle> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Noodle"),
+        backgroundColor: Color(0xFF399D44),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),

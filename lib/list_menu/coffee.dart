@@ -83,6 +83,8 @@ class _CoffeeState extends State<Coffee> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Coffee"),
+        backgroundColor: Color(0xFF399D44),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

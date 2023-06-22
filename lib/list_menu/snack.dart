@@ -81,6 +81,8 @@ class _SnackState extends State<Snack> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Snack"),
+        backgroundColor: Color(0xFF399D44),
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),

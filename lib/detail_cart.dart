@@ -1,6 +1,8 @@
 import 'package:customer_app/firebase_database.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:intl/intl.dart' as intl;
 
 import 'database_instance.dart';
 import 'model/product_model.dart';
@@ -14,6 +16,7 @@ class DetailCart extends StatefulWidget {
 
 class _DetailCartState extends State<DetailCart> {
   TextEditingController noteController = TextEditingController();
+  final intlFormat = intl.NumberFormat("#,##0");
   DatabaseInstance? databaseInstance;
 
   Future initDatabase() async {
@@ -33,6 +36,8 @@ class _DetailCartState extends State<DetailCart> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Pesanan Saya"),
+          backgroundColor: Color(0xFF399D44),
+          elevation: 0,
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +68,8 @@ class _DetailCartState extends State<DetailCart> {
               height: 20,
             ),
             Text(
-              "  Catatan",style: Constants.subtitle,
+              "  Catatan",
+              style: Constants.subtitle,
             ),
             SizedBox(
               height: 10,
@@ -98,18 +104,93 @@ class _DetailCartState extends State<DetailCart> {
         return Column(
           children: [
             Container(
-              height: 50,
+              height: 100,
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(snapshot.data![index].nameProduct!),
-                  IconButton(
-                    onPressed: () {
-                      delete(snapshot.data![index].id!);
-                    },
-                    icon: Icon(Icons.clear),
+                  Row(
+                    children: [
+                      Container(
+                        width: 20,
+                        height: 20,
+                        child: Text(
+                          "${index + 1}. ",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${toBeginningOfSentenceCase(snapshot.data![index].nameProduct!)}",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w700),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Rp.${intlFormat.format(int.parse(snapshot.data![index].price!))}",
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //         onPressed: () {
+                  //           if (amount[index] >
+                  //               1) {
+                  //             setState(
+                  //                 () {
+                  //               amount[index]--;
+                  //             });
+                  //           }
+                  //         },
+                  //         icon: Icon(Icons
+                  //             .remove)),
+                  //     Text("${amount[index]}"),
+                  //     IconButton(
+                  //         onPressed: () {
+                  //           setState(() {
+                  //             amount.update(index, (value) => amount[index]++);
+                  //             // totalamountPrice =
+                  //             //     int.parse(snapshot.data![index].price.toString()) *
+                  //             //         amount[index];
+                  //           });
+                  //         },
+                  //         icon: Icon(
+                  //             Icons.add)),
+                  //   ],
+                  // ),
+
+                  Row(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("QTY : ${snapshot.data![index].qty}"),
+                          Text("Totl : Rp${intlFormat.format(int.parse(snapshot.data![index].totalPrice.toString()))}"),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          delete(snapshot.data![index].id!);
+                        },
+                        icon: Icon(Icons.delete,color: Colors.redAccent,),
+                      ),
+                    ],
                   )
                 ],
               ),
