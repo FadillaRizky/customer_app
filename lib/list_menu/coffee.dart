@@ -24,6 +24,7 @@ class _CoffeeState extends State<Coffee> {
 
   void addCart(uid,nama,harga, amount, totalamountPrice) async {
     await databaseInstance.insert({
+      "id":uid,
       "name_product": nama,
       "price": harga,
       "qty": amount,

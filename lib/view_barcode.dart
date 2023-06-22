@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:customer_app/shared_pref.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -16,16 +17,32 @@ class QrView extends StatefulWidget {
 
 class _QrViewState extends State<QrView> {
   Barcode? result;
+  String? meja;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   submitBarcode(){
     if (result!.code != null) {
-      LoginPref.saveToSharedPref(result!.code!);
+      LoginPref.saveToSharedPref(meja!);
       Navigator.pop(context);
       Navigator.pushNamed(context, "/menu");
 
     }
 
+  }
+  noMeja()async{
+    print(result!.code!);
+    DataSnapshot snapshot = await FirebaseDatabase.instance.ref().child("meja").child(result!.code!).get();
+    var data = snapshot.value as Map;
+    setState(() {
+      meja = data['no_meja'];
+    });
+  }
+  
+
+  @override
+  void initState() {
+    super.initState();
+    
   }
 
   // In order to get hot reload to work we need to pause the camera ifthe platform
@@ -44,6 +61,9 @@ class _QrViewState extends State<QrView> {
     var size = MediaQuery.of(context).size;
     var height = size.height;
     var width = size.width;
+    if (result != null) {
+      noMeja();
+    }
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -75,10 +95,10 @@ class _QrViewState extends State<QrView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                if (result != null)
+                if (result != null && meja != null)
                   Text(
                     // 'Barcode Type: ${describeEnum(result!.format)}  '
-                    'Nomer Meja : ${result!.code}',
+                    'Nomer Meja : ${meja}',
                     style: TextStyle(
                         fontSize: 20, overflow: TextOverflow.ellipsis),
                   )

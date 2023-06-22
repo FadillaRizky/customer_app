@@ -17,6 +17,7 @@ class DetailCart extends StatefulWidget {
 
 class _DetailCartState extends State<DetailCart> {
   TextEditingController noteController = TextEditingController();
+  TextEditingController namaController = TextEditingController();
   final intlFormat = intl.NumberFormat("#,##0");
   DatabaseInstance? databaseInstance;
 
@@ -28,9 +29,9 @@ class _DetailCartState extends State<DetailCart> {
     setState(() {});
   }
 
-  initSpklist() async {
-    await LoginPref.getPref().then((value) {
-      noMeja = value.noMeja;
+  initnoMeja() async {
+   await LoginPref.getPref().then((value) {
+      noMeja = value.noMeja!;
     });
   }
 
@@ -38,7 +39,9 @@ class _DetailCartState extends State<DetailCart> {
   void initState() {
     super.initState();
     databaseInstance = DatabaseInstance();
+
     initDatabase();
+    initnoMeja();
   }
 
   @override
@@ -86,8 +89,25 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: TextFormField(
                 minLines: 1,
-                initialValue: noMeja,
+                initialValue: noMeja!,
                 enabled: false,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )),
+              ),
+            ),
+            Text(
+              "  Nama Customer",
+              style: Constants.subtitle,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: double.infinity,
+              child: TextField(
+                minLines: 1,
+                controller: namaController,
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(8),
                     border: OutlineInputBorder(
@@ -122,7 +142,11 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: InkWell(
                 onTap: () {
-                  Firebase.order({});
+                  Firebase.order({
+                    'no_meja' : noMeja.toString(),
+                    'name_customer': namaController.text,
+                    'catatan': noteController.text,
+                  });
                 },
                 child: Center(
                   child: Text(
