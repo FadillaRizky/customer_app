@@ -34,7 +34,10 @@ class _QrViewState extends State<QrView> {
     DataSnapshot snapshot = await FirebaseDatabase.instance.ref().child("meja").child(result!.code!).get();
     var data = snapshot.value as Map;
     setState(() {
-      meja = data['no_meja'];
+      if(result!.code! != snapshot.key){
+        meja = data['no_meja'];
+      }
+      meja = "gk ada";
     });
   }
   
@@ -128,10 +131,15 @@ class _QrViewState extends State<QrView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                if (result != null)
+                meja == "gk ada" ? 
+                Text(
+                  'QR tidak valid',
+                  style: TextStyle(fontSize: 20),
+                ) : Container(), 
+                if (result != null && meja != "gk ada")
                   Text(
                     // 'Barcode Type: ${describeEnum(result!.format)}  '
-                    'Nomer Meja : ${result!.code}',
+                    'Nomer Meja : ${meja}',
                     style: TextStyle(
                         fontSize: 20, overflow: TextOverflow.ellipsis),
                   )
