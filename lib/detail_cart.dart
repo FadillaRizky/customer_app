@@ -71,10 +71,8 @@ class _DetailCartState extends State<DetailCart> {
               "  Catatan",
               style: Constants.subtitle,
             ),
-            SizedBox(
-              height: 10,
-            ),
-            SizedBox(
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               width: double.infinity,
               child: TextField(
                 minLines: 1,
@@ -87,13 +85,36 @@ class _DetailCartState extends State<DetailCart> {
                     )),
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 41, 185, 58),
+                  borderRadius: BorderRadius.circular(5)),
+              width: double.infinity,
+              child: InkWell(
+                onTap: () {
+                  Firebase.order({});
+                },
+                child: Center(
+                  child: Text(
+                    "Order",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ],
         ));
   }
 
   Widget showListCart(
       AsyncSnapshot<List<ProductModel>> snapshot, BuildContext context) {
-    Future delete(int id) async {
+    Future delete(String id) async {
       await databaseInstance!.delete(id);
       setState(() {});
     }
@@ -104,7 +125,7 @@ class _DetailCartState extends State<DetailCart> {
         return Column(
           children: [
             Container(
-              height: 100,
+              height: 80,
               width: double.infinity,
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
@@ -181,14 +202,18 @@ class _DetailCartState extends State<DetailCart> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("QTY : ${snapshot.data![index].qty}"),
-                          Text("Totl : Rp${intlFormat.format(int.parse(snapshot.data![index].totalPrice.toString()))}"),
+                          Text(
+                              "Total : Rp${intlFormat.format(int.parse(snapshot.data![index].totalPrice.toString()))}"),
                         ],
                       ),
                       IconButton(
                         onPressed: () {
                           delete(snapshot.data![index].id!);
                         },
-                        icon: Icon(Icons.delete,color: Colors.redAccent,),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.redAccent,
+                        ),
                       ),
                     ],
                   )

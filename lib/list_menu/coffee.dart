@@ -22,8 +22,9 @@ class _CoffeeState extends State<Coffee> {
   final intlFormat = intl.NumberFormat("#,##0");
   int? totalHarga;
 
-  void addCart(nama,harga, amount, totalamountPrice) async {
+  void addCart(uid,nama,harga, amount, totalamountPrice) async {
     await databaseInstance.insert({
+      "id":"$uid",
       "name_product": nama,
       "price": harga,
       "qty": amount,
@@ -106,6 +107,7 @@ class _CoffeeState extends State<Coffee> {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   var val = data[index].value as Map;
+                  val['key'] = data[index].key;
                   return SizedBox(
                     width: double.infinity,
                     child: Card(
@@ -284,6 +286,7 @@ class _CoffeeState extends State<Coffee> {
                                                               ),
                                                               onPressed: () {
                                                                 addCart(
+                                                                    val['key'],
                                                                     val['name'],
                                                                     val['harga'],
                                                                     amount,

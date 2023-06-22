@@ -32,7 +32,7 @@ class DatabaseInstance {
 
   Future _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE $table ($id INTEGER PRIMARY KEY, $nameProduct TEXT NULL , $price TEXT NULL,$qty TEXT NULL,$totalPrice TEXT NULL)');
+        'CREATE TABLE $table ($id TEXT PRIMARY KEY, $nameProduct TEXT NULL , $price TEXT NULL,$qty TEXT NULL,$totalPrice TEXT NULL)');
   }
 
   Future<List<ProductModel>> all() async {
@@ -47,13 +47,13 @@ class DatabaseInstance {
     return query;
   }
 
-  Future<int> update(int idParam, Map<String, dynamic> row) async {
+  Future<int> update(String idParam, Map<String, dynamic> row) async {
     final query = await _database!
         .update(table, row, where: '$id = ?', whereArgs: [idParam]);
     return query;
   }
 
-  Future delete(int idParam) async {
+  Future delete(String idParam) async {
     await _database!.delete(table, where: '$id = ?', whereArgs: [idParam]);
   }
 }

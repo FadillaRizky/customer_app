@@ -26,8 +26,9 @@ class _NoncoffeeState extends State<Noncoffee> {
     setState(() {});
   }
 
-  void addCart(nama, harga, amount, totalamountPrice) async {
+  void addCart(uid,nama,harga, amount, totalamountPrice) async {
     await databaseInstance.insert({
+      "id":"$uid",
       "name_product": nama,
       "price": harga,
       "qty": amount,
@@ -107,13 +108,13 @@ class _NoncoffeeState extends State<Noncoffee> {
                       itemCount: data.length,
                       itemBuilder: (context, index) {
                         var val = data[index].value as Map;
+                        val['key'] = data[index].key;
                         return SizedBox(
                           width: double.infinity,
                           child: Card(
                             clipBehavior: Clip.hardEdge,
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                                borderRadius: BorderRadius.all(Radius.circular(10))),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -136,14 +137,12 @@ class _NoncoffeeState extends State<Noncoffee> {
                                       ),
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               "${toBeginningOfSentenceCase(val['name'])}",
                                               style: TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w700),
+                                                  fontSize: 20, fontWeight: FontWeight.w700),
                                             ),
                                             SizedBox(
                                               height: 5,
@@ -160,7 +159,6 @@ class _NoncoffeeState extends State<Noncoffee> {
                                             Text(
                                               "${toBeginningOfSentenceCase(val['deskripsi'])}",
                                               maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400),
@@ -183,38 +181,31 @@ class _NoncoffeeState extends State<Noncoffee> {
                                               ),
                                             ),
                                             backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Colors.green),
+                                                MaterialStateProperty.all<Color>(
+                                                    Colors.green),
                                           ),
                                           onPressed: () {
                                             showModalBottomSheet(
-                                              backgroundColor:
-                                                  Colors.transparent,
+                                              backgroundColor: Colors.transparent,
                                               context: context,
                                               builder: (BuildContext context) {
                                                 int amount = 1;
-                                                int totalamountPrice =
-                                                    val['harga'];
+                                                int totalamountPrice = val['harga'];
                                                 return StatefulBuilder(
-                                                  builder: (BuildContext
-                                                          context,
+                                                  builder: (BuildContext context,
                                                       StateSetter setState) {
                                                     return Container(
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .vertical(
-                                                          top: Radius.circular(
-                                                              20.0),
+                                                            BorderRadius.vertical(
+                                                          top: Radius.circular(20.0),
                                                         ),
                                                       ),
-                                                      padding:
-                                                          EdgeInsets.all(16.0),
+                                                      padding: EdgeInsets.all(16.0),
                                                       child: Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                            CrossAxisAlignment.start,
                                                         mainAxisSize:
                                                             MainAxisSize.min,
                                                         children: <Widget>[
@@ -226,35 +217,31 @@ class _NoncoffeeState extends State<Noncoffee> {
                                                               Text(
                                                                 "${toBeginningOfSentenceCase(val['name'])}",
                                                                 style: TextStyle(
-                                                                    fontSize:
-                                                                        20,
+                                                                    fontSize: 20,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
                                                               ),
                                                               IconButton(
-                                                                  onPressed:
-                                                                      () {
+                                                                  onPressed: () {
                                                                     Navigator.pop(
                                                                         context);
                                                                   },
-                                                                  icon: Icon(Icons
-                                                                      .clear)),
+                                                                  icon: Icon(
+                                                                      Icons.clear)),
                                                             ],
                                                           ),
                                                           SizedBox(
                                                             height: 5,
                                                           ),
-                                                          Text(
-                                                              "${toBeginningOfSentenceCase(val['deskripsi'])}"),
+                                                          Text("${toBeginningOfSentenceCase(val['deskripsi'])}"),
                                                           Divider(),
                                                           Row(
                                                             children: [
                                                               Row(
                                                                 children: [
                                                                   IconButton(
-                                                                      onPressed:
-                                                                          () {
+                                                                      onPressed: () {
                                                                         if (amount >
                                                                             1) {
                                                                           setState(
@@ -263,50 +250,51 @@ class _NoncoffeeState extends State<Noncoffee> {
                                                                           });
                                                                         }
                                                                       },
-                                                                      icon: Icon(
-                                                                          Icons
-                                                                              .remove)),
-                                                                  Text(
-                                                                      "$amount"),
+                                                                      icon: Icon(Icons
+                                                                          .remove)),
+                                                                  Text("$amount"),
                                                                   IconButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        setState(
-                                                                            () {
+                                                                      onPressed: () {
+                                                                        setState(() {
                                                                           amount++;
                                                                           totalamountPrice =
-                                                                              val['harga'] * amount;
+                                                                              val['harga'] *
+                                                                                  amount;
                                                                         });
                                                                       },
                                                                       icon: Icon(
-                                                                          Icons
-                                                                              .add)),
+                                                                          Icons.add)),
                                                                 ],
                                                               ),
                                                               Expanded(
-                                                                child:
-                                                                    ElevatedButton(
-                                                                        style:
-                                                                            ButtonStyle(
-                                                                          shape:
-                                                                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                            RoundedRectangleBorder(
-                                                                              borderRadius: BorderRadius.circular(8),
-                                                                            ),
-                                                                          ),
-                                                                          backgroundColor:
-                                                                              MaterialStateProperty.all<Color>(Colors.green),
+                                                                child: ElevatedButton(
+                                                                    style:
+                                                                        ButtonStyle(
+                                                                      shape: MaterialStateProperty
+                                                                          .all<
+                                                                              RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius
+                                                                                  .circular(8),
                                                                         ),
-                                                                        onPressed:
-                                                                            () {
-                                                                          addCart(
-                                                                              val['name'],
-                                                                              val['harga'],
-                                                                              amount,
-                                                                              totalamountPrice);
-                                                                        },
-                                                                        child: Text(
-                                                                            "Add Rp.${intlFormat.format(amount * val['harga'])} ")),
+                                                                      ),
+                                                                      backgroundColor:
+                                                                          MaterialStateProperty.all<
+                                                                                  Color>(
+                                                                              Colors
+                                                                                  .green),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      addCart(
+                                                                          val['key'],
+                                                                          val['name'],
+                                                                          val['harga'],
+                                                                          amount,
+                                                                          totalamountPrice);
+                                                                    },
+                                                                    child: Text(
+                                                                        "Add Rp.${intlFormat.format(amount * val['harga'])} ")),
                                                               )
                                                             ],
                                                           )

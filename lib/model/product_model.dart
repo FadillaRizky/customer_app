@@ -1,5 +1,5 @@
 class ProductModel {
-  int? id;
+  String? id;
   String? nameProduct, price , qty,totalPrice ;
 
   ProductModel(
