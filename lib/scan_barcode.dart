@@ -21,7 +21,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(onPressed: (){
-                  Navigator.pushNamed(context, "/qrview");
+                  Navigator.pushNamed(context, "/menu");
 
                 }, child: Text("Scan Meja")),
               )
