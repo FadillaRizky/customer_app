@@ -3,6 +3,7 @@ import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:intl/intl.dart' as intl;
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'database_instance.dart';
 import 'model/product_model.dart';
@@ -15,8 +16,10 @@ class DetailCart extends StatefulWidget {
 }
 
 class _DetailCartState extends State<DetailCart> {
+  TextEditingController namaController = TextEditingController();
   TextEditingController noteController = TextEditingController();
   final intlFormat = intl.NumberFormat("#,##0");
+  bool load = false;
   DatabaseInstance? databaseInstance;
 
   Future initDatabase() async {
@@ -68,6 +71,23 @@ class _DetailCartState extends State<DetailCart> {
               height: 20,
             ),
             Text(
+              "  Nama Customer",
+              style: Constants.subtitle,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: double.infinity,
+              child: TextField(
+                minLines: 1,
+                controller: namaController,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )),
+              ),
+            ),
+            Text(
               "  Catatan",
               style: Constants.subtitle,
             ),
@@ -94,7 +114,22 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: InkWell(
                 onTap: () {
-                  Firebase.order({});
+                  if (load == false) {
+                    if (namaController.text != null) {
+                      Firebase.order({
+                        'no_meja' : 1,
+                        'name_customer': namaController.text,
+                        'catatan': noteController.text,
+                      });
+                      setState(() {
+                        load = true;
+                        EasyLoading.show(status: 'loading...',dismissOnTap: true);
+                      });
+                      Navigator.of(context).pushReplacementNamed('/');
+                      return;
+                    }
+                    EasyLoading.showError('Please insert your name',dismissOnTap: true);
+                  }
                 },
                 child: Center(
                   child: Text(

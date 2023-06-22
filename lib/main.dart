@@ -4,6 +4,7 @@ import 'package:customer_app/list_menu/noncoffee.dart';
 import 'package:customer_app/list_menu/noodle.dart';
 import 'package:customer_app/list_menu/snack.dart';
 // import 'package:customer_app/list_menu/rice.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:customer_app/scan_barcode.dart';
 import 'package:customer_app/view_barcode.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         ///qr view
         '/qrview': (context) => QrView(),
       },
+      builder: EasyLoading.init(),
     );
   }
 }

@@ -330,9 +330,10 @@ class _CoffeeState extends State<Coffee> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data!.length == 0) {
-                    return Center(
-                      child: Text("Produk Belum Ditambahkan"),
-                    );
+                    // return Center(
+                    //   child: Text("Produk Belum Ditambahkan"),
+                    // );
+                    return Container();
                   }
                   return FittedBox(
                     child: Padding(
