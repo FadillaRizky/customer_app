@@ -37,7 +37,6 @@ class _QrViewState extends State<QrView> {
       if(result!.code! != snapshot.key){
         meja = data['no_meja'];
       }
-      meja = "gk ada";
     });
   }
   
@@ -131,14 +130,11 @@ class _QrViewState extends State<QrView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                meja == "gk ada" ? 
-                Text(
-                  'QR tidak valid',
-                  style: TextStyle(fontSize: 20),
-                ) : Container(), 
-                if (result != null && meja != "gk ada")
+                if (result != null)
                   Text(
                     // 'Barcode Type: ${describeEnum(result!.format)}  '
+                    meja == null ?
+                    'QR tidak valid' :
                     'Nomer Meja : ${meja}',
                     style: TextStyle(
                         fontSize: 20, overflow: TextOverflow.ellipsis),
