@@ -1,4 +1,5 @@
 import 'package:customer_app/firebase_database.dart';
+import 'package:customer_app/shared_pref.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
@@ -19,9 +20,18 @@ class _DetailCartState extends State<DetailCart> {
   final intlFormat = intl.NumberFormat("#,##0");
   DatabaseInstance? databaseInstance;
 
+
+  String? noMeja;
+
   Future initDatabase() async {
     await databaseInstance!.database();
     setState(() {});
+  }
+
+  initSpklist() async {
+    await LoginPref.getPref().then((value) {
+      noMeja = value.noMeja;
+    });
   }
 
   @override
@@ -66,6 +76,24 @@ class _DetailCartState extends State<DetailCart> {
             ),
             SizedBox(
               height: 20,
+            ),
+            Text(
+              "  Nomor Meja",
+              style: Constants.subtitle,
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              width: double.infinity,
+              child: TextFormField(
+                minLines: 1,
+                initialValue: noMeja,
+                enabled: false,
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    )),
+              ),
             ),
             Text(
               "  Catatan",
