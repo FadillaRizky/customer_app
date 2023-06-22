@@ -3,6 +3,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:customer_app/shared_pref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -20,6 +21,12 @@ class _QrViewState extends State<QrView> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   submitBarcode(){
+    if (result!.code != null) {
+      LoginPref.saveToSharedPref(result!.code!);
+      Navigator.pop(context);
+      Navigator.pushNamed(context, "/menu");
+
+    }
 
   }
 
@@ -73,7 +80,7 @@ class _QrViewState extends State<QrView> {
                 if (result != null)
                   Text(
                     // 'Barcode Type: ${describeEnum(result!.format)}  '
-                    'Hasil : ${result!.code}',
+                    'Nomer Meja : ${result!.code}',
                     style: TextStyle(
                         fontSize: 20, overflow: TextOverflow.ellipsis),
                   )
@@ -92,7 +99,6 @@ class _QrViewState extends State<QrView> {
                             width: width / 3,
                             child: ElevatedButton(
                               onPressed: () {
-                                // Navigator.of(context).pop();
                                 submitBarcode();
                                 print(result!.code!);
                               },
