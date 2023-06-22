@@ -21,12 +21,9 @@ class _QrViewState extends State<QrView> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   submitBarcode(){
-    if (result!.code != null) {
       LoginPref.saveToSharedPref(meja!);
       Navigator.pop(context);
       Navigator.pushNamed(context, "/menu");
-
-    }
 
   }
   noMeja()async{
@@ -138,7 +135,9 @@ class _QrViewState extends State<QrView> {
                           Text("Nomer Meja : ${meja}",style: TextStyle(
             fontSize: 20, overflow: TextOverflow.ellipsis)),
                           SizedBox(height: 10,),
-                          ElevatedButton(onPressed: (){}, child: Text("Pesan Sekarang",style: TextStyle(
+                          ElevatedButton(onPressed: (){
+                            submitBarcode();
+                          }, child: Text("Pesan Sekarang",style: TextStyle(
           fontSize: 20, overflow: TextOverflow.ellipsis)))
                         ],
                       )

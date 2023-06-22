@@ -20,6 +20,7 @@ class DetailCart extends StatefulWidget {
 class _DetailCartState extends State<DetailCart> {
   TextEditingController noteController = TextEditingController();
   TextEditingController namaController = TextEditingController();
+  TextEditingController noMejaController = TextEditingController();
   final intlFormat = intl.NumberFormat("#,##0");
   DatabaseInstance? databaseInstance;
 
@@ -30,10 +31,29 @@ class _DetailCartState extends State<DetailCart> {
     await databaseInstance!.database();
     setState(() {});
   }
+  submitCart(){
+    if (namaController.text == "") {
+      EasyLoading.showInfo("Nama Pelanggan Kosong",dismissOnTap: true);
+      return;
+    }
+    if (noteController.text == "") {
+      EasyLoading.showInfo("Catatan Kosong",dismissOnTap: true);
+      return;
+    }
+    Firebase.order({
+      'no_meja' : noMeja.toString(),
+      'name_customer': namaController.text,
+      'catatan': noteController.text,
+    });
+    databaseInstance!.clearDatabase();
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>MenuList() ));
+  }
 
   initnoMeja() async {
    await LoginPref.getPref().then((value) {
-      noMeja = value.noMeja!;
+      setState(() {
+        noMeja = value.noMeja!;
+      });
     });
   }
 
@@ -42,7 +62,9 @@ class _DetailCartState extends State<DetailCart> {
     super.initState();
     databaseInstance = DatabaseInstance();
     initDatabase();
-    initnoMeja();
+    LoginPref.getPref().then((value) {
+        noMejaController.text = value.noMeja!;
+    });
   }
 
   @override
@@ -90,7 +112,7 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: TextFormField(
                 minLines: 1,
-                initialValue: noMeja,
+                controller: noMejaController,
                 enabled: false,
                 decoration: InputDecoration(
                     contentPadding: EdgeInsets.all(8),
@@ -143,19 +165,7 @@ class _DetailCartState extends State<DetailCart> {
               width: double.infinity,
               child: InkWell(
                 onTap: () {
-                  if (namaController.text == "") {
-                    EasyLoading.showInfo("Nama Pelanggan Kosong",dismissOnTap: true);
-                  }
-                  if (noteController.text == "") {
-                    EasyLoading.showInfo("Catatan Kosong",dismissOnTap: true);
-                  }
-                  Firebase.order({
-                    'no_meja' : noMeja.toString(),
-                    'name_customer': namaController.text,
-                    'catatan': noteController.text,
-                  });
-                  databaseInstance!.clearDatabase();
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>MenuList() ));
+                  submitCart();
                 },
                 child: Center(
                   child: Text(

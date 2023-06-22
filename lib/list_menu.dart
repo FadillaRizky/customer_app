@@ -190,7 +190,7 @@ class _MenuListState extends State<MenuList> {
                         SizedBox(
                             height: 75,
                             width: double.infinity,
-                            child: Image.asset("assets/images/pizza.jpg",
+                            child: Image.asset("assets/images/snack.jpg",
                                 fit: BoxFit.fitWidth)),
                         Positioned.fill(
                             child: Center(
