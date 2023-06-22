@@ -30,6 +30,38 @@ class _QrViewState extends State<QrView> {
 
   }
 
+  Widget isStringInRange(String value,double width) {
+    print(result!.code!);
+    int? parsedValue = int.tryParse(value);
+    if (parsedValue != null && parsedValue >= 1 && parsedValue <= 1000) {
+        return Column(
+          children: [
+            Text(
+              'Nomer Meja : ${value}',
+              style: TextStyle(
+                  fontSize: 20, overflow: TextOverflow.ellipsis),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: width/3,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      submitBarcode();
+                    },
+                    child: Text("Pesan Sekarang"),
+                  ),
+                ),
+              ],
+            )
+          ],
+        );
+    } else {
+      return Text("Maaf Barcode yang anda masukan salah");
+    }
+  }
+
   // In order to get hot reload to work we need to pause the camera ifthe platform
   // is android, or resume the camera if the platform is iOS.
   @override
@@ -48,6 +80,7 @@ class _QrViewState extends State<QrView> {
     var width = size.width;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.green,
         actions: [
           IconButton(
               onPressed: () async {
@@ -78,65 +111,12 @@ class _QrViewState extends State<QrView> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 if (result != null)
-                  Text(
-                    // 'Barcode Type: ${describeEnum(result!.format)}  '
-                    'Nomer Meja : ${result!.code}',
-                    style: TextStyle(
-                        fontSize: 20, overflow: TextOverflow.ellipsis),
-                  )
+                  isStringInRange(result!.code!,width)
                 else
                   const Text(
-                    'Scan a code',
+                    'Scan Barcode Meja',
                     style: TextStyle(fontSize: 20),
                   ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    if (result != null)
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: width / 3,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                submitBarcode();
-                                print(result!.code!);
-                              },
-                              child: Text("Submit"),
-                            ),
-                          ),
-                        ],
-                      )
-                    else
-                      SizedBox(),
-                  ],
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: <Widget>[
-                //     Container(
-                //       margin: const EdgeInsets.all(8),
-                //       child: ElevatedButton(
-                //         onPressed: () async {
-                //           await controller?.pauseCamera();
-                //         },
-                //         child: const Text('pause',
-                //             style: TextStyle(fontSize: 20)),
-                //       ),
-                //     ),
-                //     Container(
-                //       margin: const EdgeInsets.all(8),
-                //       child: ElevatedButton(
-                //         onPressed: () async {
-                //           await controller?.resumeCamera();
-                //         },
-                //         child: const Text('resume',
-                //             style: TextStyle(fontSize: 20)),
-                //       ),
-                //     )
-                //   ],
-                // ),
               ],
             ),
           )
