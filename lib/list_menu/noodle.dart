@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart' as intl;
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_ui_database/firebase_ui_database.dart';
 import 'package:flutter/material.dart';
 
 import '../database_instance.dart';
@@ -14,16 +17,18 @@ class Noodle extends StatefulWidget {
 
 class _NoodleState extends State<Noodle> {
   DatabaseInstance databaseInstance = DatabaseInstance();
+  final intlFormat = intl.NumberFormat("#,##0");
   int? totalHarga;
 
   Future initDatabase() async {
     await databaseInstance!.database();
     setState(() {});
   }
-  void addCart(index, amount, totalamountPrice) async {
+
+  void addCart(nama,harga, amount, totalamountPrice) async {
     await databaseInstance.insert({
-      "name_product": coffeeName[index],
-      "price": coffeePrice[index],
+      "name_product": nama,
+      "price": harga,
       "qty": amount,
       "total_price": totalamountPrice
     });
@@ -76,184 +81,215 @@ class _NoodleState extends State<Noodle> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return SizedBox(
-                    width: double.infinity,
-                    child: Card(
-                      clipBehavior: Clip.hardEdge,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${index + 1}. ${coffeeName[index]}",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w500),
-                            ),
-                            Row(
-                              children: [
-                                Card(
-                                  clipBehavior: Clip.hardEdge,
-                                  child: SizedBox(
-                                      height: 100,
-                                      width: 100,
-                                      child: Image.asset(
-                                        "assets/images/migoreng.jpg",
-                                        fit: BoxFit.cover,
-                                      )),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Rp.${coffeePrice[index]}",
-                                  style: TextStyle(
-                                      fontSize: 20, fontWeight: FontWeight.w500),
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
-                                    style: ButtonStyle(
-                                      shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
+              child: FirebaseDatabaseQueryBuilder(
+                pageSize: 100000,
+                query: FirebaseDatabase.instance.ref().child("menu"),
+                builder: (context, snapshot, child) {
+                  if (snapshot.hasData) {
+                    var data = snapshot.docs.where((data) {
+                      var val = data.value as Map;
+                      return val['kategori'] == "noodle";
+                    }).toList();
+                    if(data.length <= 0){
+                      return Center(
+                        child: Text("Menu untuk kategori ini kosong"),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        var val = data[index].value as Map;
+                        return SizedBox(
+                          width: double.infinity,
+                          child: Card(
+                            clipBehavior: Clip.hardEdge,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(10))),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${index + 1}. ${val['name']}",
+                                    style: TextStyle(
+                                        fontSize: 18, fontWeight: FontWeight.w500),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Card(
+                                        clipBehavior: Clip.hardEdge,
+                                        child: SizedBox(
+                                            height: 100,
+                                            width: 100,
+                                            child: Image.network(
+                                              "${val['image']}",
+                                              fit: BoxFit.cover,
+                                            )),
                                       ),
-                                      backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.green),
-                                    ),
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          int amount = 1;
-                                          int totalamountPrice = coffeePrice[index];
-                                          return StatefulBuilder(
-                                            builder: (BuildContext context,
-                                                StateSetter setState) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius: BorderRadius.vertical(
-                                                    top: Radius.circular(20.0),
-                                                  ),
-                                                ),
-                                                padding: EdgeInsets.all(16.0),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                      children: [
-                                                        Text(
-                                                          "${coffeeName[index]}",
-                                                          style: TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                              FontWeight.w500),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        "Rp.${intlFormat.format(val['harga'])}",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                          style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                            ),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<Color>(
+                                                    Colors.green),
+                                          ),
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                              backgroundColor: Colors.transparent,
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                int amount = 1;
+                                                int totalamountPrice = val['harga'];
+                                                return StatefulBuilder(
+                                                  builder: (BuildContext context,
+                                                      StateSetter setState) {
+                                                    return Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius.vertical(
+                                                          top: Radius.circular(20.0),
                                                         ),
-                                                        IconButton(
-                                                            onPressed: () {
-                                                              Navigator.pop(context);
-                                                            },
-                                                            icon: Icon(Icons.clear)),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5,
-                                                    ),
-                                                    Text(
-                                                        "Americano adalah minuman kopi yang sempurna untuk penggemar kopi yang menginginkan rasa yang kuat namun tetap segar.Americano menawarkan kombinasi yang sempurna antara kekayaan kopi dan kelegitan yang menyegarkan."),
-                                                    Divider(),
-                                                    Row(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  if (amount > 1) {
-                                                                    setState(() {
-                                                                      amount--;
-                                                                    });
-                                                                  }
-                                                                },
-                                                                icon: Icon(
-                                                                    Icons.remove)),
-                                                            Text("$amount"),
-                                                            IconButton(
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    amount++;
-                                                                    totalamountPrice =
-                                                                        coffeePrice[
-                                                                        index] *
-                                                                            amount;
-                                                                  });
-                                                                },
-                                                                icon:
-                                                                Icon(Icons.add)),
-                                                          ],
-                                                        ),
-                                                        Expanded(
-                                                          child: ElevatedButton(
-                                                              style: ButtonStyle(
-                                                                shape: MaterialStateProperty
-                                                                    .all<
-                                                                    RoundedRectangleBorder>(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                        8),
-                                                                  ),
-                                                                ),
-                                                                backgroundColor:
-                                                                MaterialStateProperty
-                                                                    .all<Color>(
-                                                                    Colors
-                                                                        .green),
+                                                      ),
+                                                      padding: EdgeInsets.all(16.0),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment.start,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "${val['name']}",
+                                                                style: TextStyle(
+                                                                    fontSize: 20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
                                                               ),
-                                                              onPressed: () {
-                                                                addCart(index, amount,
-                                                                    totalamountPrice);
-                                                              },
-                                                              child: Text(
-                                                                  "Add ${amount * coffeePrice[index]} ")),
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                      ).then((value) {
-                                        setState(() {});
-                                      });
-                                    },
-                                    child: Text("Add to Cart +")),
-                              ],
+                                                              IconButton(
+                                                                  onPressed: () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  icon: Icon(
+                                                                      Icons.clear)),
+                                                            ],
+                                                          ),
+                                                          SizedBox(
+                                                            height: 5,
+                                                          ),
+                                                          Text("${val['deskripsi']}"),
+                                                          Divider(),
+                                                          Row(
+                                                            children: [
+                                                              Row(
+                                                                children: [
+                                                                  IconButton(
+                                                                      onPressed: () {
+                                                                        if (amount >
+                                                                            1) {
+                                                                          setState(
+                                                                              () {
+                                                                            amount--;
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                      icon: Icon(Icons
+                                                                          .remove)),
+                                                                  Text("$amount"),
+                                                                  IconButton(
+                                                                      onPressed: () {
+                                                                        setState(() {
+                                                                          amount++;
+                                                                          totalamountPrice =
+                                                                              val['harga'] *
+                                                                                  amount;
+                                                                        });
+                                                                      },
+                                                                      icon: Icon(
+                                                                          Icons.add)),
+                                                                ],
+                                                              ),
+                                                              Expanded(
+                                                                child: ElevatedButton(
+                                                                    style:
+                                                                        ButtonStyle(
+                                                                      shape: MaterialStateProperty
+                                                                          .all<
+                                                                              RoundedRectangleBorder>(
+                                                                        RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius
+                                                                                  .circular(8),
+                                                                        ),
+                                                                      ),
+                                                                      backgroundColor:
+                                                                          MaterialStateProperty.all<
+                                                                                  Color>(
+                                                                              Colors
+                                                                                  .green),
+                                                                    ),
+                                                                    onPressed: () {
+                                                                      addCart(
+                                                                          val['name'],
+                                                                          val['harga'],
+                                                                          amount,
+                                                                          totalamountPrice);
+                                                                    },
+                                                                    child: Text(
+                                                                        "Add Rp.${intlFormat.format(amount * val['harga'])} ")),
+                                                              )
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            ).then((value) {
+                                              setState(() {});
+                                            });
+                                          },
+                                          child: Text("Add to Cart +")),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
                   );
                 },
               ),

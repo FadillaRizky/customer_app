@@ -87,7 +87,7 @@ class _NoncoffeeState extends State<Noncoffee> {
                   if (snapshot.hasData) {
                     var data = snapshot.docs.where((data) {
                       var val = data.value as Map;
-                      return val['kategori'] == "coffee";
+                      return val['kategori'] == "non coffee";
                     }).toList();
                     if(data.length <= 0){
                       return Center(
