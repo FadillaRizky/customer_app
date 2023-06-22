@@ -24,7 +24,8 @@ class Firebase {
       });
 
       for (var x in value) {
-        dbRef.child(key!).child("list_order").child("${x.id}").set({
+        print(x.id);
+        dbRef.child(key!).child("list_order").child("${x.id}").update({
           "nama":x.nameProduct,
           "qty":x.qty,
           "satuan":x.price,

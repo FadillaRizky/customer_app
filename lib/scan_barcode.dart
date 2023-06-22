@@ -20,10 +20,24 @@ class _ScanBarcodeState extends State<ScanBarcode> {
               SizedBox(height: 20,),
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(onPressed: (){
+                child: InkWell(
+                  onTap: (){
                   Navigator.pushNamed(context, "/menu");
-
-                }, child: Text("Scan Meja")),
+                }, 
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  color: Color.fromARGB(255, 41, 185, 58),
+                  child: Center(
+                    child: Text(
+                      "Scan Meja",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white
+                      ),
+                    ),
+                  )
+                  ),
+                ),
               )
             ],
           ),
