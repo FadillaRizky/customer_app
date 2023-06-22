@@ -22,8 +22,8 @@ class _ScanBarcodeState extends State<ScanBarcode> {
                 width: double.infinity,
                 child: ElevatedButton(onPressed: (){
                   Navigator.pushNamed(context, "/qrview");
-
-                }, child: Text("Scan Meja")),
+                }, child: Text("Scan Meja"),
+                ),
               )
             ],
           ),

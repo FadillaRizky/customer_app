@@ -34,7 +34,7 @@ class _QrViewState extends State<QrView> {
     DataSnapshot snapshot = await FirebaseDatabase.instance.ref().child("meja").child(result!.code!).get();
     var data = snapshot.value as Map;
     setState(() {
-      if(result!.code! != snapshot.key){
+      if(result!.code! == snapshot.key){
         meja = data['no_meja'];
       }
     });
@@ -131,14 +131,26 @@ class _QrViewState extends State<QrView> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 if (result != null)
-                  Text(
-                    // 'Barcode Type: ${describeEnum(result!.format)}  '
-                    meja == null ?
-                    'QR tidak valid' :
-                    'Nomer Meja : ${meja}',
-                    style: TextStyle(
-                        fontSize: 20, overflow: TextOverflow.ellipsis),
-                  )
+                  meja == null ? 
+                  Text("QR tidak valid",style: TextStyle(
+                        fontSize: 20, overflow: TextOverflow.ellipsis))
+                      :Column(
+                        children: [
+                          Text("Nomer Meja : ${meja}",style: TextStyle(
+            fontSize: 20, overflow: TextOverflow.ellipsis)),
+                          SizedBox(height: 10,),
+                          ElevatedButton(onPressed: (){}, child: Text("Pesan Sekarang",style: TextStyle(
+          fontSize: 20, overflow: TextOverflow.ellipsis)))
+                        ],
+                      )
+                // Text(
+                  //   // 'Barcode Type: ${describeEnum(result!.format)}  '
+                  //   meja == null ?
+                  //   'QR tidak valid' :
+                  //   'Nomer Meja : ${meja}',
+                  //   style: TextStyle(
+                  //       fontSize: 20, overflow: TextOverflow.ellipsis),
+                  // )
                 else
                   const Text(
                     'Scan Barcode Meja',
