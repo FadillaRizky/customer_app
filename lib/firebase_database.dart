@@ -37,6 +37,7 @@ class Firebase {
       dbRef.child(key!).update({
         "total_harga": subTotal
       });
+      db!.clearDatabase();
       EasyLoading.showSuccess("Terima kasih telah mengorder",dismissOnTap: true);
     });
   }

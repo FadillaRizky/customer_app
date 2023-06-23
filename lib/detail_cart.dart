@@ -32,21 +32,26 @@ class _DetailCartState extends State<DetailCart> {
     setState(() {});
   }
   submitCart(){
-    if (namaController.text == "") {
-      EasyLoading.showInfo("Nama Pelanggan Kosong",dismissOnTap: true);
-      return;
-    }
-    if (noteController.text == "") {
-      EasyLoading.showInfo("Catatan Kosong",dismissOnTap: true);
-      return;
-    }
-    Firebase.order({
-      'no_meja' : noMeja.toString(),
-      'name_customer': namaController.text,
-      'catatan': noteController.text,
+    databaseInstance!.all().then((value){
+      if (value.length <= 0) {
+        EasyLoading.showError("Orderan tidak boleh kosong",dismissOnTap: true);
+        return;
+      }
+      if (namaController.text == "") {
+        EasyLoading.showInfo("Nama Pelanggan Kosong",dismissOnTap: true);
+        return;
+      }
+      if (noteController.text == "") {
+        EasyLoading.showInfo("Catatan Kosong",dismissOnTap: true);
+        return;
+      }
+      Firebase.order({
+        'no_meja' : noMejaController.text,
+        'name_customer': namaController.text,
+        'catatan': noteController.text,
+      });
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>MenuList() ));
     });
-    databaseInstance!.clearDatabase();
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>MenuList() ));
   }
 
   initnoMeja() async {
