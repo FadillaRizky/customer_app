@@ -9,6 +9,7 @@ import 'package:customer_app/scan_barcode.dart';
 import 'package:customer_app/view_barcode.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 import 'detail_cart.dart';
 import 'list_menu/coffee.dart';
@@ -17,6 +18,10 @@ import 'menu.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+  await Hive.openBox('cart');
+  var box = Hive.box('cart');
+  // box.put("12312",{"name_product":"black coffee","price":12323,"qty":123,"total_price":123132});
+  // box.put("122312",{"name_product":"black coffee","price":12323,"qty":123,"total_price":123132});
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
   );

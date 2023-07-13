@@ -1,13 +1,14 @@
-import 'package:customer_app/firebase_database.dart';
+import 'package:customer_app/database/firebase_database.dart';
 import 'package:customer_app/list_menu.dart';
 import 'package:customer_app/shared_pref.dart';
 import 'package:customer_app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:intl/intl.dart' as intl;
 
-import 'database_instance.dart';
+import 'database/database_instance.dart';
 import 'model/product_model.dart';
 
 class DetailCart extends StatefulWidget {
@@ -23,42 +24,57 @@ class _DetailCartState extends State<DetailCart> {
   TextEditingController noMejaController = TextEditingController();
   final intlFormat = intl.NumberFormat("#,##0");
   DatabaseInstance? databaseInstance;
-
-
   String? noMeja;
+  int totalHarga = 0;
+  int totalItem = 0;
 
-  Future initDatabase() async {
-    await databaseInstance!.database();
-    setState(() {});
-  }
-  submitCart(){
-    databaseInstance!.all().then((value){
+  submitCart() {
+    if (noMeja!.isEmpty) {
+      EasyLoading.showError("Maaf meja anda tidak terdeteksi. Silahkan di scan kembali QR meja-nya", dismissOnTap: true);
+      return;
+    }
+    databaseInstance!.all().then((value) {
       if (value.length <= 0) {
-        EasyLoading.showError("Orderan tidak boleh kosong",dismissOnTap: true);
+        EasyLoading.showError("Orderan tidak boleh kosong", dismissOnTap: true);
         return;
       }
       if (namaController.text == "") {
-        EasyLoading.showInfo("Nama Pelanggan Kosong",dismissOnTap: true);
+        EasyLoading.showInfo("Nama Pelanggan Kosong", dismissOnTap: true);
         return;
       }
       if (noteController.text == "") {
-        EasyLoading.showInfo("Catatan Kosong",dismissOnTap: true);
+        EasyLoading.showInfo("Catatan Kosong", dismissOnTap: true);
         return;
       }
       Firebase.order({
-        'no_meja' : noMejaController.text,
+        'no_meja': noMejaController.text,
         'name_customer': namaController.text,
         'catatan': noteController.text,
       });
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>MenuList() ));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => MenuList()));
     });
   }
 
   initnoMeja() async {
-   await LoginPref.getPref().then((value) {
+    await LoginPref.getPref().then((value) {
       setState(() {
         noMeja = value.noMeja!;
       });
+    });
+  }
+
+  Future hiveDatabase() async {
+    var box = Hive.box('cart');
+    var harga = 0;
+
+    for (var x in box.values) {
+      Map<dynamic, dynamic> data = x;
+      harga += int.parse(data['total_price'].toString());
+    }
+    setState(() {
+      totalItem = box.length;
+      totalHarga = harga;
     });
   }
 
@@ -66,9 +82,9 @@ class _DetailCartState extends State<DetailCart> {
   void initState() {
     super.initState();
     databaseInstance = DatabaseInstance();
-    initDatabase();
+    hiveDatabase();
     LoginPref.getPref().then((value) {
-        noMejaController.text = value.noMeja!;
+      noMejaController.text = value.noMeja!;
     });
   }
 
@@ -84,26 +100,7 @@ class _DetailCartState extends State<DetailCart> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: FutureBuilder<List<ProductModel>>(
-                future: databaseInstance!.all(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    if (snapshot.data!.length == 0) {
-                      return Container();
-                      // return Center(
-                      //   child: Text("Produk Belum Ditambahkan"),
-                      // );
-                    }
-                    return showListCart(snapshot, context);
-                  }
-                  if (snapshot.hasError) {
-                    Center(child: Text("${snapshot.error}"));
-                  }
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+              child: showListCart(Hive.box('cart'), context),
             ),
             SizedBox(
               height: 20,
@@ -176,10 +173,9 @@ class _DetailCartState extends State<DetailCart> {
                   child: Text(
                     "Order",
                     style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white
-                    ),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
                   ),
                 ),
               ),
@@ -188,16 +184,26 @@ class _DetailCartState extends State<DetailCart> {
         ));
   }
 
-  Widget showListCart(
-      AsyncSnapshot<List<ProductModel>> snapshot, BuildContext context) {
+  Widget showListCart(Box box, BuildContext context) {
     Future delete(String id) async {
-      await databaseInstance!.delete(id);
-      setState(() {});
+      box.delete(id);
+      hiveDatabase();
+    }
+
+    if (box.length <= 0) {
+      return Center(
+        child: Container(
+          child: Text("Pesanan ada kosong"),
+        ),
+      );
     }
 
     return ListView.builder(
-      itemCount: snapshot.data!.length,
+      itemCount: box.length,
       itemBuilder: (context, index) {
+        String key = box.keyAt(index);
+        Map<dynamic,dynamic> value = box.getAt(index);
+        
         return Column(
           children: [
             Container(
@@ -226,7 +232,7 @@ class _DetailCartState extends State<DetailCart> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "${toBeginningOfSentenceCase(snapshot.data![index].nameProduct!)}",
+                            "${toBeginningOfSentenceCase(value['name_product'])}",
                             style: TextStyle(
                                 fontSize: 18, fontWeight: FontWeight.w700),
                           ),
@@ -234,7 +240,7 @@ class _DetailCartState extends State<DetailCart> {
                             height: 5,
                           ),
                           Text(
-                            "Rp.${intlFormat.format(int.parse(snapshot.data![index].price!))}",
+                            "Rp.${intlFormat.format(int.parse(value['price'].toString()))}",
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.w500),
                           ),
@@ -277,14 +283,14 @@ class _DetailCartState extends State<DetailCart> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("QTY : ${snapshot.data![index].qty}"),
+                          Text("QTY : ${value['qty']}"),
                           Text(
-                              "Total : Rp${intlFormat.format(int.parse(snapshot.data![index].totalPrice.toString()))}"),
+                              "Total : Rp${intlFormat.format(int.parse(value['total_price'].toString()))}"),
                         ],
                       ),
                       IconButton(
                         onPressed: () {
-                          delete(snapshot.data![index].id!);
+                          delete(key);
                         },
                         icon: Icon(
                           Icons.delete,

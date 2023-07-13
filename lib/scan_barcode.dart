@@ -17,7 +17,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("assets/images/logo.jpg"),
+              Image.asset("assets/images/logo.jpg",height: 400,width: 400,),
               SizedBox(height: 20,),
               Container(
                 margin: EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
@@ -28,7 +28,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, "/qrview");
+                    Navigator.pushNamed(context, "/menu");
                   },
                   child: Center(
                     child: Text(
