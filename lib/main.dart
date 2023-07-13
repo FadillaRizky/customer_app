@@ -31,13 +31,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  final String noMeja = "26" ;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/${noMeja}',
       routes: {
-        '/': (context) => ScanBarcode(),
+        '/${noMeja}': (context) => ScanBarcode(noMeja: noMeja,),
         '/menu': (context) => MenuList(),
 
         /// list menu

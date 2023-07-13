@@ -29,31 +29,35 @@ class _DetailCartState extends State<DetailCart> {
   int totalItem = 0;
 
   submitCart() {
-    if (noMeja!.isEmpty) {
-      EasyLoading.showError("Maaf meja anda tidak terdeteksi. Silahkan di scan kembali QR meja-nya", dismissOnTap: true);
+    // if (noMeja!.isEmpty) {
+    //   EasyLoading.showError("Maaf meja anda tidak terdeteksi. Silahkan di scan kembali QR meja-nya", dismissOnTap: true);
+    //   return;
+    // }
+    if (namaController.text.isEmpty) {
+      EasyLoading.showError("Nama Customer Belum Terisi");
       return;
     }
-    databaseInstance!.all().then((value) {
-      if (value.length <= 0) {
-        EasyLoading.showError("Orderan tidak boleh kosong", dismissOnTap: true);
-        return;
-      }
-      if (namaController.text == "") {
-        EasyLoading.showInfo("Nama Pelanggan Kosong", dismissOnTap: true);
-        return;
-      }
-      if (noteController.text == "") {
-        EasyLoading.showInfo("Catatan Kosong", dismissOnTap: true);
-        return;
-      }
-      Firebase.order({
-        'no_meja': noMejaController.text,
-        'name_customer': namaController.text,
-        'catatan': noteController.text,
-      });
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MenuList()));
-    });
+    // databaseInstance!.all().then((value) {
+    //   if (value.length <= 0) {
+    //     EasyLoading.showError("Orderan tidak boleh kosong", dismissOnTap: true);
+    //     return;
+    //   }
+    //   if (namaController.text == "") {
+    //     EasyLoading.showInfo("Nama Pelanggan Kosong", dismissOnTap: true);
+    //     return;
+    //   }
+    //   if (noteController.text == "") {
+    //     EasyLoading.showInfo("Catatan Kosong", dismissOnTap: true);
+    //     return;
+    //   }
+    //   Firebase.order({
+    //     'no_meja': noMejaController.text,
+    //     'name_customer': namaController.text,
+    //     'catatan': noteController.text,
+    //   });
+    //   Navigator.pushReplacement(
+    //       context, MaterialPageRoute(builder: (context) => MenuList()));
+    // });
   }
 
   initnoMeja() async {

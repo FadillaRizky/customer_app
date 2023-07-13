@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MenuList extends StatefulWidget {
-  const MenuList({Key? key}) : super(key: key);
+  const MenuList({Key? key,}) : super(key: key);
 
   @override
   State<MenuList> createState() => _MenuListState();
