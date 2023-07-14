@@ -30,35 +30,36 @@ class _DetailCartState extends State<DetailCart> {
   int totalItem = 0;
 
   submitCart() {
-    // if (noMeja!.isEmpty) {
-    //   EasyLoading.showError("Maaf meja anda tidak terdeteksi. Silahkan di scan kembali QR meja-nya", dismissOnTap: true);
-    //   return;
-    // }
+    if (noMeja!.isEmpty) {
+      EasyLoading.showError(
+          "Maaf meja anda tidak terdeteksi. Silahkan di scan kembali QR meja-nya",
+          dismissOnTap: true);
+      return;
+    }
+    var box = Hive.box('cart');
+    if (box.length <= 0) {
+      EasyLoading.showError("Orderan tidak boleh kosong", dismissOnTap: true);
+      return;
+    }
     if (namaController.text.isEmpty) {
       EasyLoading.showError("Nama Customer Belum Terisi");
       return;
     }
-    // databaseInstance!.all().then((value) {
-    //   if (value.length <= 0) {
-    //     EasyLoading.showError("Orderan tidak boleh kosong", dismissOnTap: true);
-    //     return;
-    //   }
-    //   if (namaController.text == "") {
-    //     EasyLoading.showInfo("Nama Pelanggan Kosong", dismissOnTap: true);
-    //     return;
-    //   }
-    //   if (noteController.text == "") {
-    //     EasyLoading.showInfo("Catatan Kosong", dismissOnTap: true);
-    //     return;
-    //   }
-    //   Firebase.order({
-    //     'no_meja': noMejaController.text,
-    //     'name_customer': namaController.text,
-    //     'catatan': noteController.text,
-    //   });
-    //   Navigator.pushReplacement(
-    //       context, MaterialPageRoute(builder: (context) => MenuList()));
-    // });
+    if (namaController.text == "") {
+      EasyLoading.showInfo("Nama Pelanggan Kosong", dismissOnTap: true);
+      return;
+    }
+    if (noteController.text == "") {
+      EasyLoading.showInfo("Catatan Kosong", dismissOnTap: true);
+      return;
+    }
+    Firebase.order({
+      'no_meja': noMejaController.text,
+      'name_customer': namaController.text,
+      'catatan': noteController.text,
+    }, box);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => MenuList()));
   }
 
   initnoMeja() async {
@@ -82,14 +83,15 @@ class _DetailCartState extends State<DetailCart> {
       totalHarga = harga;
     });
   }
-  cekScan()async{
-    
+
+  cekScan() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
 
     bool status = pref.containsKey("noMeja");
     if (status == false) {
       Navigator.pushReplacementNamed(context, "/");
-      EasyLoading.showError("Kamu belum scan Qr Code silahkan scan kembali",dismissOnTap: true);
+      EasyLoading.showError("Kamu belum scan Qr Code silahkan scan kembali",
+          dismissOnTap: true);
       return;
     }
     LoginPref.getPref().then((value) {
@@ -102,6 +104,7 @@ class _DetailCartState extends State<DetailCart> {
     super.initState();
     databaseInstance = DatabaseInstance();
     hiveDatabase();
+    initnoMeja();
     cekScan();
   }
 
@@ -219,8 +222,8 @@ class _DetailCartState extends State<DetailCart> {
       itemCount: box.length,
       itemBuilder: (context, index) {
         String key = box.keyAt(index);
-        Map<dynamic,dynamic> value = box.getAt(index);
-        
+        Map<dynamic, dynamic> value = box.getAt(index);
+
         return Column(
           children: [
             Container(
