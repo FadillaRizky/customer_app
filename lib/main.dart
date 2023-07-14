@@ -1,8 +1,10 @@
 import 'package:customer_app/firebase_options.dart';
+import 'package:customer_app/get_meja.dart';
 import 'package:customer_app/list_menu.dart';
 import 'package:customer_app/list_menu/noncoffee.dart';
 import 'package:customer_app/list_menu/noodle.dart';
 import 'package:customer_app/list_menu/snack.dart';
+import 'package:customer_app/shared_pref.dart';
 // import 'package:customer_app/list_menu/rice.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:customer_app/scan_barcode.dart';
@@ -17,13 +19,13 @@ import 'menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Hive.openBox('cart');
   var box = Hive.box('cart');
   // box.put("12312",{"name_product":"black coffee","price":12323,"qty":123,"total_price":123132});
   // box.put("122312",{"name_product":"black coffee","price":12323,"qty":123,"total_price":123132});
   await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+    options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
 }
@@ -31,16 +33,17 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  final String noMeja = "26" ;
+  final String noMeja = "26";
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/${noMeja}',
+      initialRoute: '/',
       routes: {
-        '/${noMeja}': (context) => ScanBarcode(noMeja: noMeja,),
+        '/': (context) => ScanBarcode(),
         '/menu': (context) => MenuList(),
+        '/getMeja': (context) => WidgetMeja(),
 
         /// list menu
         '/coffee': (context) => Coffee(),
@@ -54,6 +57,14 @@ class MyApp extends StatelessWidget {
 
         ///qr view
         '/qrview': (context) => QrView(),
+      },
+      onGenerateRoute: (settings) {
+        if (settings.name!.startsWith("/getMeja")) {
+          String uidNoMeja = "";
+          final settingsUri = Uri.parse(settings.name.toString());
+          uidNoMeja = settingsUri.queryParameters['no_meja'].toString();
+          GetMeja.QrMeja(uidNoMeja, context);
+        }
       },
       builder: EasyLoading.init(),
     );

@@ -1,11 +1,12 @@
 import 'package:customer_app/shared_pref.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class ScanBarcode extends StatefulWidget {
-  final String noMeja;
 
   const ScanBarcode({
-    Key? key, required this.noMeja,
+    Key? key
 
   }) : super(key: key);
 
@@ -14,6 +15,22 @@ class ScanBarcode extends StatefulWidget {
 }
 
 class _ScanBarcodeState extends State<ScanBarcode> {
+  cekScan()async{
+    
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    bool status = pref.containsKey("noMeja");
+    if (status == true) {
+      // Navigator.pushReplacementNamed(context, "/menu");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cekScan();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +39,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 "assets/images/logo.jpg",
@@ -31,7 +49,17 @@ class _ScanBarcodeState extends State<ScanBarcode> {
               SizedBox(
                 height: 20,
               ),
+              kIsWeb == true ? 
               Container(
+                margin:
+                    EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: Text("Tolong Scan Barcodenya terlebih dahulu menggunakan scanner",style: TextStyle(color:Colors.black,fontSize: 26),),
+              )
+              : Container(
                 margin:
                     EdgeInsets.only(top: 5, bottom: 15, left: 10, right: 10),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -41,8 +69,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
                 width: double.infinity,
                 child: InkWell(
                   onTap: () {
-                    LoginPref.saveToSharedPref(widget.noMeja);
-                    Navigator.pushNamed(context, "/menu");
+                    Navigator.pushNamed(context, "/qrview");
                   },
                   child: Center(
                     child: Text(

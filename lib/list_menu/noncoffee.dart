@@ -116,9 +116,9 @@ class _NoncoffeeState extends State<Noncoffee> {
                                             child: Image.network(
                                               "${val['image']}",
                                               fit: BoxFit.cover,
-                                              loadingBuilder: (BuildContext, Widget, ImageChunkEvent){
-                                                return CircularProgressIndicator();
-                                              },
+                                              // loadingBuilder: (BuildContext, Widget, ImageChunkEvent){
+                                              //   return CircularProgressIndicator();
+                                              // },
                                               errorBuilder: (BuildContext, Object, StackTrace){
                                                 return  Text('Gambar Kosong');
                                               },
