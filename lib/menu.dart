@@ -3,6 +3,8 @@ import 'dart:async';
 
 import 'package:customer_app/model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'list_menu/coffee.dart';
 import 'database/database_instance.dart';
@@ -45,12 +47,24 @@ class _MenuState extends State<Menu> {
     await databaseInstance!.database();
     setState(() {});
   }
+  cekScan()async{
+    
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    bool status = pref.containsKey("noMeja");
+    if (status == false) {
+      Navigator.pushReplacementNamed(context, "/");
+      EasyLoading.showError("Kamu belum scan Qr Code silahkan scan kembali",dismissOnTap: true);
+      return;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     databaseInstance = DatabaseInstance();
     initDatabase();
+    cekScan();
   }
 
   @override

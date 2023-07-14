@@ -21,7 +21,7 @@ class _ScanBarcodeState extends State<ScanBarcode> {
 
     bool status = pref.containsKey("noMeja");
     if (status == true) {
-      // Navigator.pushReplacementNamed(context, "/menu");
+      Navigator.pushReplacementNamed(context, "/menu");
     }
   }
 

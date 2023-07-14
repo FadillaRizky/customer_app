@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
 import 'package:intl/intl.dart' as intl;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'database/database_instance.dart';
 import 'model/product_model.dart';
@@ -81,15 +82,27 @@ class _DetailCartState extends State<DetailCart> {
       totalHarga = harga;
     });
   }
+  cekScan()async{
+    
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    bool status = pref.containsKey("noMeja");
+    if (status == false) {
+      Navigator.pushReplacementNamed(context, "/");
+      EasyLoading.showError("Kamu belum scan Qr Code silahkan scan kembali",dismissOnTap: true);
+      return;
+    }
+    LoginPref.getPref().then((value) {
+      noMejaController.text = value.noMeja!;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     databaseInstance = DatabaseInstance();
     hiveDatabase();
-    LoginPref.getPref().then((value) {
-      noMejaController.text = value.noMeja!;
-    });
+    cekScan();
   }
 
   @override

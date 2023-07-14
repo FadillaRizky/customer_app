@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_ui_database/firebase_ui_database.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show toBeginningOfSentenceCase;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../database/database_instance.dart';
 import '../model/product_model.dart';
@@ -53,10 +55,23 @@ class _NoncoffeeState extends State<Noncoffee> {
     });
   }
 
+  cekScan()async{
+    
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    bool status = pref.containsKey("noMeja");
+    if (status == false) {
+      Navigator.pushReplacementNamed(context, "/");
+      EasyLoading.showError("Kamu belum scan Qr Code silahkan scan kembali",dismissOnTap: true);
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     hiveDatabase();
+    cekScan();
   }
 
   @override
