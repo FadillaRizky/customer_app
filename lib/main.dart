@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:customer_app/firebase_options.dart';
 import 'package:customer_app/get_meja.dart';
 import 'package:customer_app/list_menu.dart';
@@ -5,6 +7,7 @@ import 'package:customer_app/list_menu/noncoffee.dart';
 import 'package:customer_app/list_menu/noodle.dart';
 import 'package:customer_app/list_menu/snack.dart';
 import 'package:customer_app/shared_pref.dart';
+import 'package:flutter/foundation.dart';
 // import 'package:customer_app/list_menu/rice.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:customer_app/scan_barcode.dart';
@@ -12,6 +15,7 @@ import 'package:customer_app/view_barcode.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'detail_cart.dart';
@@ -20,14 +24,27 @@ import 'menu.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  await Hive.openBox('cart');
-  var box = Hive.box('cart');
+  
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await initHive();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
+}
+Future<void> initHive() async {
+  // For web hive does not need to be initialized.
+  if (!kIsWeb) {
+    var dir = (await getApplicationDocumentsDirectory()).path;
+    Hive.init(dir);
+  }
+  
+  await Hive.openBox('cart');
+  var box = Hive.box('cart');
+
+
 }
 
 class MyApp extends StatelessWidget {

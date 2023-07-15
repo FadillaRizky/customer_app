@@ -27,10 +27,12 @@ class _QrViewState extends State<QrView> {
 
   }
   noMeja()async{
-    DataSnapshot snapshot = await FirebaseDatabase.instance.ref().child("meja").child(result!.code!).get();
+    var removeUrlQr = result!.code!.replaceAll("https://ordermantan.com/#/getMeja?no_meja=", "");
+    print(removeUrlQr);
+    DataSnapshot snapshot = await FirebaseDatabase.instance.ref().child("meja").child(removeUrlQr).get();
     var data = snapshot.value as Map;
     setState(() {
-      if(result!.code! == snapshot.key){
+      if(removeUrlQr == snapshot.key){
         meja = data['no_meja'];
       }
     });

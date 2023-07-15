@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuList extends StatefulWidget {
   const MenuList({Key? key,}) : super(key: key);
@@ -8,6 +10,23 @@ class MenuList extends StatefulWidget {
 }
 
 class _MenuListState extends State<MenuList> {
+  cekScan()async{
+    
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    bool status = pref.containsKey("noMeja");
+    if (status == false) {
+      Navigator.pushReplacementNamed(context, "/");
+      EasyLoading.showError("Kamu belum scan Qr Code silahkan scan kembali",dismissOnTap: true);
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    cekScan();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

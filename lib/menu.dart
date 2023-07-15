@@ -62,9 +62,9 @@ class _MenuState extends State<Menu> {
   @override
   void initState() {
     super.initState();
+    cekScan();
     databaseInstance = DatabaseInstance();
     initDatabase();
-    cekScan();
   }
 
   @override

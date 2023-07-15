@@ -58,8 +58,8 @@ class _DetailCartState extends State<DetailCart> {
       'name_customer': namaController.text,
       'catatan': noteController.text,
     }, box);
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => MenuList()));
+    Navigator.pushReplacementNamed(context, "/");
+    EasyLoading.showSuccess("Terima kasih telah mengorder", dismissOnTap: true);
   }
 
   initnoMeja() async {

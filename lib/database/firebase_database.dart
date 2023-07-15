@@ -4,11 +4,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Firebase {
   static void order(Map<String, dynamic> data, Box box) async {
     DatabaseInstance? db = DatabaseInstance();
     DatabaseReference dbRef = FirebaseDatabase.instance.ref().child('orderan');
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     final key = dbRef.push().key;
     int subTotal = 0;
@@ -35,7 +37,6 @@ class Firebase {
       box.deleteAt(x);
     }
     dbRef.child(key!).update({"total_harga": subTotal});
-    print(box.values);
-    EasyLoading.showSuccess("Terima kasih telah mengorder", dismissOnTap: true);
+    pref.clear();
   }
 }
