@@ -53,13 +53,15 @@ class _DetailCartState extends State<DetailCart> {
       EasyLoading.showInfo("Catatan Kosong", dismissOnTap: true);
       return;
     }
+    
+    Navigator.pushReplacementNamed(context, "/");
+    EasyLoading.showSuccess("Terima kasih telah mengorder", dismissOnTap: true);
+
     Firebase.order({
       'no_meja': noMejaController.text,
       'name_customer': namaController.text,
       'catatan': noteController.text,
     }, box);
-    Navigator.pushReplacementNamed(context, "/");
-    EasyLoading.showSuccess("Terima kasih telah mengorder", dismissOnTap: true);
   }
 
   initnoMeja() async {
